@@ -10,8 +10,8 @@ function App() {
 
       <main style={{ maxWidth: '900px', margin: '0 auto', textAlign: 'center' }}>
         <section style={{ padding: '40px', border: '1px solid #333', borderRadius: '8px' }}>
-          <h2>Калькулятор шлема</h2>
-          <p>Здесь скоро появится конфигуратор. Работаем над горном! 🔨</p>
+     <h2>Helmet Calculator</h2>
+<p>A configurator is coming soon. Working on the horn! 🔨</p>
         </section>
       </main>
     </div>
