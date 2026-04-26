@@ -1,30 +1,44 @@
+import { useState } from 'react'; // Додай імпорт хука
 import './App.css';
-import heroImageUrl from './assets/hero-bg.webp';
+import heroImageUrl from './assets/hero-bg.webp'; 
 
 function App() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <div className="app-container">
-      {/* Navigation */}
       <nav className="navbar">
         <div className="logo">GORILLA ARMOUR</div>
-        <div className="nav-links">
-          <a href="#gallery">Collection</a>
-          <a href="#about">The Forge</a>
-          <a href="#calculator">Configurator</a>
-          <a href="#contacts">Contacts</a>
+        
+        {/* Кнопка Гамбургер */}
+        <button className="hamburger" onClick={toggleMenu}>
+          <span className={isMenuOpen ? "bar open" : "bar"}></span>
+          <span className={isMenuOpen ? "bar open" : "bar"}></span>
+          <span className={isMenuOpen ? "bar open" : "bar"}></span>
+        </button>
+
+        {/* Додаємо динамічний клас для меню */}
+        <div className={`nav-links ${isMenuOpen ? "active" : ""}`}>
+          <a href="#gallery" onClick={() => setIsMenuOpen(false)}>Collection</a>
+          <a href="#about" onClick={() => setIsMenuOpen(false)}>The Forge</a>
+          <a href="#calculator" onClick={() => setIsMenuOpen(false)}>Configurator</a>
+          <a href="#contacts" onClick={() => setIsMenuOpen(false)}>Contacts</a>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <header 
-        className="hero" 
-        style={{ backgroundImage: `url(${heroImageUrl})` }} // Передаємо фото
-      >
+      {/* Hero та решта секцій залишаються як були */}
+      <header className="hero" style={{ backgroundImage: `url(${heroImageUrl})` }}>
         <div className="hero-overlay">
-          {/* ... контент ... */}
+          <h1>Feel the spirit of the Middle Ages</h1>
+          <p>Handmade medieval helmets forged with passion</p>
+          <a href="#calculator" className="btn-primary">Build Your Helmet</a>
         </div>
       </header>
-
+      
       {/* Gallery Placeholder */}
       <section id="gallery" className="section">
         <h2 className="section-title">Our Masterpieces</h2>
@@ -53,7 +67,7 @@ function App() {
       {/* Footer */}
       <footer id="contacts" className="footer">
         <div className="footer-content">
-          <p>GORILLA ARMOUR | UKRAINE</p>
+          <p>GORILLA ARMOR | UKRAINE</p>
           <div className="social-links">
             <a href="#">Instagram</a>
           </div>
