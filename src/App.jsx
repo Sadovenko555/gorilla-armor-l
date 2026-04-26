@@ -1,4 +1,5 @@
 import './App.css';
+import heroImageUrl from './assets/hero-bg.webp';
 
 function App() {
   return (
@@ -15,11 +16,12 @@ function App() {
       </nav>
 
       {/* Hero Section */}
-      <header className="hero">
+      <header 
+        className="hero" 
+        style={{ backgroundImage: `url(${heroImageUrl})` }} // Передаємо фото
+      >
         <div className="hero-overlay">
-          <h1>Feel the spirit of the Middle Ages</h1>
-          <p>Handmade medieval helmets forged with passion</p>
-          <a href="#calculator" className="btn-primary">Build Your Helmet</a>
+          {/* ... контент ... */}
         </div>
       </header>
 

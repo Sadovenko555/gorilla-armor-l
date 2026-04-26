@@ -6,8 +6,6 @@
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
+  display: block; /* Або просто видали flex/place-items */
   min-height: 100vh;
 }
