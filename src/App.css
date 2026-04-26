@@ -1,11 +1,4 @@
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  overflow-x: hidden; /* Щоб нічого випадково не вилізло за край екрана */
-}
-
-/* --- Базові налаштування --- */
+/* --- Global Resets --- */
 :root {
   --primary-red: #8b0000;
   --bg-dark: #0f0f0f;
@@ -14,24 +7,31 @@ html, body {
   --text-dim: #999;
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+  background-color: var(--bg-dark);
+}
+
 * {
   box-sizing: border-box;
 }
 
 .app-container {
-  background-color: var(--bg-dark);
   color: var(--text-main);
   scroll-behavior: smooth;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Просто для прикладу */
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* --- Навігація (Navbar) --- */
+/* --- Navigation --- */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 20px;
-  background: rgba(0,0,0,0.9);
+  padding: 15px 25px;
+  background: rgba(0, 0, 0, 0.9);
   position: fixed;
   width: 100%;
   top: 0;
@@ -41,226 +41,31 @@ html, body {
 
 .logo {
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   letter-spacing: 2px;
+  color: #fff;
 }
 
-/* На мобільному ховаємо посилання (потім можна додати бургер-меню, але поки спростимо) */
-.nav-links {
-  display: none;
-}
-
-/* --- Кнопки --- */
-.btn-primary {
-  display: inline-block;
-  margin-top: 20px;
-  padding: 12px 30px;
-  background-color: var(--primary-red);
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-  border-radius: 4px;
-  transition: 0.3s;
-  font-size: 0.9rem;
+.nav-links a {
+  color: var(--text-main);
+  text-decoration: none; /* Прибираємо підкреслювання */
   text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  transition: color 0.3s;
 }
 
-.btn-primary:hover {
-  background-color: #b00000;
-  transform: translateY(-2px);
+.nav-links a:hover {
+  color: var(--primary-red);
 }
 
-/* src/App.css - Розділ Hero */
-
-.hero {
-  height: 100vh; /* Зробимо на весь екран для брутальності */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  position: relative; /* Обов'язково! */
-  margin-top: 0; /* Приберемо відступ, нехай фото йде під навбар */
-  overflow: hidden;
-}
-
-/* Оверлей - це напівпрозорий шар, який лежить ПОВЕРХ фото */
-.hero-overlay {
-  background-color: rgba(0, 0, 0, 0.5); /* Напівпрозорий чорний */
-  position: absolute; /* Лягає точно поверх .hero */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  
-  /* Вирівнювання контенту всередині оверлею */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 40px;
-  box-sizing: border-box;
-  z-index: 10; /* Вище, ніж фото */
-}
-
-/* Стилі для тексту (щоб гарантувати їх видимість) */
-.hero h1 {
-  font-size: 2.5rem; /* Розмір для мобілки */
-  line-height: 1.2;
-  margin: 0 0 15px 0;
-  color: #ffffff; /* Білий колір! */
-  font-weight: bold;
-  text-transform: uppercase;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Тінь для кращого читання */
-}
-
-.hero p {
-  font-size: 1.1rem;
-  color: #e0e0e0;
-  max-width: 600px;
-  margin: 0 0 30px 0;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-}
-
-/* Оновимо Media Queries, щоб заголовки збільшувалися на ПК */
-@media (min-width: 768px) {
-  .hero h1 {
-    font-size: 4rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .hero h1 {
-    font-size: 5rem;
-  }
-}
-
-/* --- Загальні стилі секцій --- */
-.section {
-  padding: 60px 20px;
-  max-width: 1100px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.section-title {
-  font-size: 1.8rem;
-  margin-bottom: 30px;
-  text-transform: uppercase;
-  border-bottom: 2px solid var(--primary-red);
-  display: inline-block;
-  padding-bottom: 5px;
-}
-
-.placeholder-box, .calculator-placeholder {
-  height: 200px;
-  border: 2px dashed #333;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #555;
-  background-color: var(--bg-section);
-}
-
-.bg-darker {
-  background-color: var(--bg-section);
-}
-
-.about-text {
-  max-width: 700px;
-  margin: 0 auto;
-  line-height: 1.6;
-  color: var(--text-dim);
-}
-
-/* --- Footer --- */
-.footer {
-  padding: 40px 20px;
-  border-top: 1px solid #333;
-  text-align: center;
-  font-size: 0.8rem;
-}
-
-.social-links {
-  margin-top: 15px;
-}
-
-.social-links a {
-  color: var(--text-dim);
-  text-decoration: none;
-  margin: 0 10px;
-}
-
-
-/* =======================================================
-   =  MEDIA QUERIES (Адаптація для великих екранів)  =
-   ======================================================= */
-
-/* --- Планшети (Tablet - від 768px і вище) --- */
-@media (min-width: 768px) {
-  .logo {
-    font-size: 1.4rem;
-  }
-  
-  .navbar {
-    padding: 20px 40px;
-  }
-
-  .nav-links {
-    display: flex; /* Показуємо посилання на планшетах */
-  }
-
-  .nav-links a {
-    color: var(--text-main);
-    text-decoration: none;
-    margin-left: 25px;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  .hero {
-    height: 80vh; /* Стандарт для ПК */
-  }
-
-  .hero h1 {
-    font-size: 3rem; /* Збільшуємо шрифт */
-  }
-
-  .section {
-    padding: 100px 30px;
-  }
-
-  .section-title {
-    font-size: 2.2rem;
-  }
-}
-
-/* --- ПК (Desktop - від 1024px і вище) --- */
-@media (min-width: 1024px) {
-  .hero h1 {
-    font-size: 4rem;
-  }
-  
-  .hero p {
-    font-size: 1.1rem;
-  }
-  
-  .btn-primary {
-    font-size: 1rem;
-    padding: 15px 40px;
-  }
-}
-
-/* --- Стилі для Гамбургера --- */
+/* --- Hamburger Button --- */
 .hamburger {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  width: 30px;
-  height: 25px;
+  width: 28px;
+  height: 22px;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -269,61 +74,145 @@ html, body {
 }
 
 .bar {
-  width: 30px;
+  width: 100%;
   height: 3px;
   background-color: white;
   border-radius: 10px;
-  transition: all 0.3s linear;
-  position: relative;
-  transform-origin: 1px;
+  transition: all 0.3s ease;
 }
 
-/* Анімація перетворення на Х */
-.bar.open:nth-child(1) { transform: rotate(45deg); }
+.bar.open:nth-child(1) { transform: translateY(9px) rotate(45deg); }
 .bar.open:nth-child(2) { opacity: 0; }
-.bar.open:nth-child(3) { transform: rotate(-45deg); }
+.bar.open:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
 
-/* --- Мобільне меню (випадаюче) --- */
+/* --- Hero Section --- */
+.hero {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  position: relative;
+}
+
+.hero-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 2.2rem;
+  text-transform: uppercase;
+  margin: 0 0 15px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.7);
+}
+
+.hero p {
+  font-size: 1rem;
+  color: #ccc;
+  max-width: 500px;
+  margin-bottom: 30px;
+}
+
+.btn-primary {
+  padding: 14px 35px;
+  background-color: var(--primary-red);
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: 2px;
+  transition: 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #a00000;
+  transform: scale(1.05);
+}
+
+/* --- Sections --- */
+.section {
+  padding: 80px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 40px;
+  text-transform: uppercase;
+  border-bottom: 3px solid var(--primary-red);
+  display: inline-block;
+  padding-bottom: 10px;
+}
+
+.bg-darker { background-color: var(--bg-section); }
+
+.placeholder-box, .calculator-placeholder {
+  height: 250px;
+  border: 1px dashed #444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+}
+
+/* --- Footer --- */
+.footer {
+  padding: 60px 20px;
+  border-top: 1px solid #333;
+  text-align: center;
+}
+
+.social-links a {
+  color: var(--text-dim);
+  text-decoration: none;
+  margin: 0 15px;
+  font-size: 0.9rem;
+}
+
+/* --- Responsive Queries --- */
 @media (max-width: 767px) {
   .nav-links {
-    display: flex; /* Змінюємо з none на flex */
+    display: flex;
     flex-direction: column;
     position: absolute;
-    top: 60px; /* Висота навбару */
+    top: 60px;
     left: 0;
     width: 100%;
-    background-color: rgba(15, 15, 15, 0.95);
-    padding: 20px 0;
-    border-bottom: 1px solid #333;
-    
-    /* Ефект появи */
+    background-color: rgba(10, 10, 10, 0.98);
+    padding: 0;
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease-in-out;
+    transition: max-height 0.4s ease-in-out;
   }
 
   .nav-links.active {
-    max-height: 300px; /* Достатньо, щоб вмістити всі посилання */
+    max-height: 400px;
+    padding: 20px 0;
   }
 
   .nav-links a {
-    margin: 15px 0;
+    padding: 15px 0;
+    width: 100%;
     text-align: center;
-    font-size: 1.2rem;
+    border-bottom: 1px solid #222;
   }
 }
 
-/* --- Для ПК (повертаємо старий вигляд) --- */
 @media (min-width: 768px) {
-  .hamburger {
-    display: none; /* Ховаємо гамбургер на великих екранах */
-  }
-
-  .nav-links {
-    display: flex !important; /* Завжди показуємо */
-    position: static;
-    background: transparent;
-    border: none;
-    max-height: none;
-  }
+  .hamburger { display: none; }
+  .nav-links { display: flex !important; gap: 30px; }
+  .hero h1 { font-size: 4rem; }
+  .hero p { font-size: 1.2rem; }
 }

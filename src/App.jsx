@@ -1,5 +1,6 @@
-import { useState } from 'react'; // Додай імпорт хука
+import { useState } from 'react';
 import './App.css';
+// Переконайтеся, що фото лежить за цим шляхом або змініть назву файлу
 import heroImageUrl from './assets/hero-bg.webp'; 
 
 function App() {
@@ -9,28 +10,31 @@ function App() {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
   return (
     <div className="app-container">
+      {/* Navigation */}
       <nav className="navbar">
         <div className="logo">GORILLA ARMOUR</div>
         
-        {/* Кнопка Гамбургер */}
-        <button className="hamburger" onClick={toggleMenu}>
+        <button className="hamburger" onClick={toggleMenu} aria-label="Menu">
           <span className={isMenuOpen ? "bar open" : "bar"}></span>
           <span className={isMenuOpen ? "bar open" : "bar"}></span>
           <span className={isMenuOpen ? "bar open" : "bar"}></span>
         </button>
 
-        {/* Додаємо динамічний клас для меню */}
         <div className={`nav-links ${isMenuOpen ? "active" : ""}`}>
-          <a href="#gallery" onClick={() => setIsMenuOpen(false)}>Collection</a>
-          <a href="#about" onClick={() => setIsMenuOpen(false)}>The Forge</a>
-          <a href="#calculator" onClick={() => setIsMenuOpen(false)}>Configurator</a>
-          <a href="#contacts" onClick={() => setIsMenuOpen(false)}>Contacts</a>
+          <a href="#gallery" onClick={closeMenu}>Collection</a>
+          <a href="#about" onClick={closeMenu}>The Forge</a>
+          <a href="#calculator" onClick={closeMenu}>Configurator</a>
+          <a href="#contacts" onClick={closeMenu}>Contacts</a>
         </div>
       </nav>
 
-      {/* Hero та решта секцій залишаються як були */}
+      {/* Hero Section */}
       <header className="hero" style={{ backgroundImage: `url(${heroImageUrl})` }}>
         <div className="hero-overlay">
           <h1>Feel the spirit of the Middle Ages</h1>
@@ -38,12 +42,12 @@ function App() {
           <a href="#calculator" className="btn-primary">Build Your Helmet</a>
         </div>
       </header>
-      
-      {/* Gallery Placeholder */}
+
+      {/* Gallery Section */}
       <section id="gallery" className="section">
         <h2 className="section-title">Our Masterpieces</h2>
         <div className="placeholder-box">
-          [ Gallery with 10 helmet models will be here ]
+          <p>[ Gallery: 10 Helmet Models Coming Soon ]</p>
         </div>
       </section>
 
@@ -56,20 +60,21 @@ function App() {
         </p>
       </section>
 
-      {/* Calculator Placeholder */}
+      {/* Calculator Section */}
       <section id="calculator" className="section">
         <h2 className="section-title">Helmet Configurator</h2>
         <div className="calculator-placeholder">
-          <p>Step-by-step order calculation coming soon...</p>
+          <p>Interactive calculator is being forged... 🔨</p>
         </div>
       </section>
 
       {/* Footer */}
       <footer id="contacts" className="footer">
         <div className="footer-content">
-          <p>GORILLA ARMOR | UKRAINE</p>
+          <p>GORILLA ARMOUR | DNIPRO, UKRAINE</p>
           <div className="social-links">
             <a href="#">Instagram</a>
+            <a href="#">Telegram</a>
           </div>
         </div>
       </footer>
