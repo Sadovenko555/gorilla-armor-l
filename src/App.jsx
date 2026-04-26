@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './App.css';
 // Переконайтеся, що фото лежить за цим шляхом або змініть назву файлу
-import heroImageUrl from './assets/hero-bg.webp'; 
+import heroImageUrl from './assets/hero-bg-2.webp'; 
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

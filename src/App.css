@@ -98,7 +98,7 @@ html, body {
 }
 
 .hero-overlay {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.247);
   position: absolute;
   inset: 0;
   display: flex;
