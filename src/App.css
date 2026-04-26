@@ -198,32 +198,45 @@ html, body {
   font-size: 0.9rem;
 }
 
-/* --- Responsive Queries --- */
 @media (max-width: 767px) {
   .nav-links {
     display: flex;
     flex-direction: column;
     position: absolute;
-    top: 60px;
+    top: 60px; /* Висота навбару */
     left: 0;
     width: 100%;
     background-color: rgba(10, 10, 10, 0.98);
-    padding: 0;
+    
+    /* ВИПРАВЛЕННЯ ТУТ: Прибираємо padding повністю */
+    padding: 0; 
+    
+    /* Ефект появи */
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.4s ease-in-out;
+    border-bottom: 1px solid #333; /* Додамо лінію знизу всього меню */
   }
 
   .nav-links.active {
-    max-height: 400px;
-    padding: 20px 0;
+    max-height: 400px; /* Достатньо для всіх пунктів */
+    
+    /* ВИПРАВЛЕННЯ ТУТ: Тепер padding не потрібен, 
+       пункти меню самі себе відштовхують */
   }
 
   .nav-links a {
-    padding: 15px 0;
+    padding: 18px 0; /* Трохи збільшимо відступ всередині самих посилань для зручності */
     width: 100%;
     text-align: center;
-    border-bottom: 1px solid #222;
+    border-bottom: 1px solid #222; /* Лінія під кожним пунктом */
+    margin: 0; /* Переконаємося, що немає зовнішніх відступів */
+    display: block; /* Щоб посилання займало всю ширину */
+  }
+
+  /* Приберемо лінію під останнім пунктом меню */
+  .nav-links a:last-child {
+    border-bottom: none;
   }
 }
 
