@@ -123,20 +123,37 @@ html, body {
   margin-bottom: 30px;
 }
 
+/* src/App.css */
+
 .btn-primary {
-  padding: 14px 35px;
+  /* Вирівнювання тексту ідеально по центру */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Трохи зменшимо вертикальні відступи і додамо горизонтальні */
+  padding: 12px 40px; 
+  
   background-color: var(--primary-red);
   color: white;
   text-decoration: none;
   font-weight: bold;
   text-transform: uppercase;
+  font-size: 1rem; /* Чітко задамо розмір шрифту */
   border-radius: 2px;
-  transition: 0.3s;
+  
+  /* Анімації */
+  transition: all 0.3s ease;
+  
+  /* Трохи тіні, щоб текст краще читався */
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 15px rgba(139, 0, 0, 0.4);
 }
 
 .btn-primary:hover {
   background-color: #a00000;
-  transform: scale(1.05);
+  transform: translateY(-3px) scale(1.03); /* Додамо ефект підняття */
+  box-shadow: 0 6px 20px rgba(139, 0, 0, 0.6);
 }
 
 /* --- Sections --- */
