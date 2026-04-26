@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './App.css';
-// Переконайтеся, що фото лежить за цим шляхом або змініть назву файлу
+import Calculator from './components/Calculator';
 import heroImageUrl from './assets/hero-bg-2.webp'; 
 
 function App() {
@@ -63,9 +63,10 @@ function App() {
       {/* Calculator Section */}
       <section id="calculator" className="section">
         <h2 className="section-title">Helmet Configurator</h2>
-        <div className="calculator-placeholder">
-          <p>Interactive calculator is being forged... 🔨</p>
-        </div>
+        
+        {/* Ось тут ми ВИКОРИСТОВУЄМО імпортований компонент */}
+        <Calculator /> 
+        
       </section>
 
       {/* Footer */}

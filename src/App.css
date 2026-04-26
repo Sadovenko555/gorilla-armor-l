@@ -198,6 +198,127 @@ html, body {
   font-size: 0.9rem;
 }
 
+.calc-input {
+  width: 100%;
+  padding: 12px;
+  background: #000;
+  border: 1px solid #444;
+  color: white;
+  margin-top: 5px;
+}
+.calc-input:focus {
+  border-color: var(--primary-red);
+  outline: none;
+}
+
+.calculator-container {
+  max-width: 600px;
+  margin: 0 auto;
+  background: var(--bg-section);
+  padding: 30px;
+  border-radius: 8px;
+  border: 1px solid #333;
+}
+
+.calc-group {
+  margin-bottom: 25px;
+  text-align: left;
+}
+
+.calc-group label {
+  display: block;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+}
+
+.calc-select {
+  width: 100%;
+  padding: 12px;
+  background: #000;
+  color: #fff;
+  border: 1px solid #444;
+  outline: none;
+}
+
+.radio-group {
+  display: flex;
+  gap: 10px;
+}
+
+.option-btn {
+  flex: 1;
+  padding: 10px;
+  background: transparent;
+  border: 1px solid #444;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.option-btn.active {
+  background: var(--primary-red);
+  border-color: var(--primary-red);
+}
+
+.total-box {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #333;
+}
+
+.total-box h3 span {
+  color: var(--primary-red);
+  font-size: 2rem;
+}
+
+.order-btn {
+  width: 100%;
+  margin-top: 20px;
+  padding: 15px;
+  background: #24A1DE; /* Колір Телеграму */
+  border: none;
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.configurator { display: flex; flex-direction: column; gap: 20px; }
+
+/* Таби з назвами шлемів */
+.helmet-selector { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.helmet-tab { 
+  padding: 10px 20px; background: #000; border: 1px solid #333; color: #777; 
+  cursor: pointer; text-transform: uppercase; font-size: 0.75rem; 
+}
+.helmet-tab.active { border-color: var(--primary-red); color: #fff; }
+
+/* Картка специфікації */
+.spec-card { 
+  background: #151515; border: 1px solid #222; padding: 40px; text-align: left; 
+}
+.spec-list { list-style: none; padding: 0; margin: 30px 0; }
+.spec-list li { 
+  padding: 15px 0; border-bottom: 1px solid #222; display: flex; 
+  justify-content: space-between; align-items: center; font-size: 0.9rem;
+}
+
+/* Кнопки вибору всередині рядка */
+.mini-buttons { display: flex; gap: 5px; }
+.mini-buttons button { 
+  background: #000; border: 1px solid #444; color: #fff; padding: 5px 12px; 
+  font-size: 0.7rem; cursor: pointer; 
+}
+.mini-buttons button.selected { background: var(--primary-red); border-color: var(--primary-red); }
+
+.order-section { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+.price-tag { font-size: 2rem; font-weight: bold; color: #fff; }
+.confirm-btn { background: var(--primary-red); color: #fff; padding: 20px; border: none; font-weight: bold; cursor: pointer; text-transform: uppercase; }
+
+
 @media (max-width: 767px) {
   .nav-links {
     display: flex;
