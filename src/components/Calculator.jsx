@@ -12,11 +12,10 @@ const Calculator = () => {
   const [headWidth, setHeadWidth] = useState('16'); 
   const [clientContact, setClientContact] = useState('');
 
-  // Функція з фіксом чисел (55.0 -> 55)
+  // Функція для чистих чисел (58.0 -> 58)
   const generateRange = (start, end, step) => {
     const range = [];
     for (let i = start; i <= end; i += step) {
-      // Якщо число ціле — прибираємо крапку
       const val = Number.isInteger(i) ? i.toString() : i.toFixed(1);
       range.push(val);
     }
@@ -72,7 +71,14 @@ const Calculator = () => {
       <div className="spec-card">
         <h3>{selectedHelmet.name} — Configurator</h3>
         <ul className="spec-list">
-          <li><strong>Base:</strong> <span>{selectedHelmet.specs.dome} / {selectedHelmet.specs.visor || selectedHelmet.specs.face}</span></li>
+          {/* ПОВЕРНУВ НАЗВИ ХАРАКТЕРИСТИК */}
+          <li>
+            <strong>Base Specs:</strong> 
+            <span>
+              <strong>Dome:</strong> {selectedHelmet.specs.dome} | 
+              <strong> {selectedHelmet.specs.visor ? 'Visor' : 'Face'}:</strong> {selectedHelmet.specs.visor || selectedHelmet.specs.face}
+            </span>
+          </li>
           
           {selectedHelmet.options.aventail?.length > 0 && (
             <li className="option-row">
@@ -99,7 +105,7 @@ const Calculator = () => {
           </li>
 
           <li className="option-row">
-            <strong>Decoration Finish:</strong>
+            <strong>Decoration:</strong>
             <div className="mini-buttons">
               {selectedHelmet.options.decoration.map((d, i) => (
                 <button key={i} className={optDecor?.label === d.label ? 'selected' : ''} onClick={() => setOptDecor(d)}>
@@ -111,7 +117,6 @@ const Calculator = () => {
 
           <hr className="divider" />
 
-          {/* БЛОК ЗАМІРІВ З НОВИМИ КЛАСАМИ */}
           <li className="measurements-container">
             <div className="m-field">
               <label>Head Circumference (cm)</label>

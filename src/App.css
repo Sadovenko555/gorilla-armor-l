@@ -176,19 +176,18 @@ html, body {
   background: #111;
 }
 
-/* Картка специфікації */
 .spec-card {
   background: #151515;
   border: 1px solid #222;
   padding: 50px 40px;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Центруємо вміст для зручності очей */
+  align-items: center;
 }
 
 .spec-card h3 {
   width: 100%;
-  max-width: 750px; /* Золота середина для десктопа */
+  max-width: 750px;
   margin-bottom: 30px;
   text-align: left;
   font-size: 1.8rem;
@@ -209,10 +208,9 @@ html, body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 40px; /* Відстань між текстом і кнопками */
+  gap: 40px;
 }
 
-/* Кнопки вибору */
 .mini-buttons {
   display: flex;
   gap: 10px;
@@ -222,7 +220,7 @@ html, body {
   background: var(--input-bg);
   border: 1px solid #444;
   color: #fff;
-  padding: 12px 22px; /* Масивні кнопки */
+  padding: 12px 22px;
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
@@ -249,7 +247,6 @@ html, body {
   margin: 30px 0;
 }
 
-/* Блок замірів */
 .measurements-container {
   width: 100%;
   max-width: 750px;
@@ -291,12 +288,8 @@ html, body {
   transition: border-color 0.3s;
 }
 
-.armor-select:focus {
-  border-color: var(--primary-red);
-  outline: none;
-}
+.armor-select:focus { border-color: var(--primary-red); outline: none; }
 
-/* Секція замовлення */
 .order-section {
   width: 100%;
   max-width: 750px;
@@ -315,11 +308,6 @@ html, body {
   border: 1px solid #444;
   color: white;
   font-size: 1rem;
-}
-
-.calc-input:focus {
-  border-color: var(--primary-red);
-  outline: none;
 }
 
 .price-tag { 
@@ -341,38 +329,61 @@ html, body {
   transition: 0.3s;
 }
 
-.confirm-btn:hover {
-  background: #a00000;
-  letter-spacing: 1px;
+.confirm-btn:hover { background: #a00000; letter-spacing: 1px; }
+
+/* --- 5. ФУТЕР (Виправлено центрування) --- */
+.footer {
+  padding: 80px 20px;
+  border-top: 1px solid var(--border-color);
+  text-align: center; /* Центруємо все всередині */
+  background: var(--bg-dark);
+  width: 100%;
 }
 
-/* --- 5. Мобільна версія та Гамбургер --- */
+.social-links {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center; /* Центруємо посилання */
+  gap: 30px;
+}
+
+.social-links a {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: color 0.3s;
+}
+
+.social-links a:hover { color: var(--primary-red); }
+
+/* --- 6. Гамбургер та Мобільна версія --- */
 .hamburger {
   display: none;
   flex-direction: column;
-  justify-content: space-around;
-  width: 28px;
-  height: 22px;
+  justify-content: space-between; /* Рівномірна відстань між лініями */
+  width: 30px;
+  height: 18px; /* Оптимальна висота, щоб не було "сплюснуто" */
   background: transparent;
   border: none;
   cursor: pointer;
   z-index: 1001;
+  padding: 0;
 }
 
 .bar {
   width: 100%;
   height: 3px;
   background-color: white;
-  border-radius: 10px;
+  border-radius: 2px;
   transition: all 0.3s ease;
 }
 
 @media (max-width: 767px) {
   .hamburger { display: flex; }
-  
   .hero h1 { font-size: 2.2rem; }
-  .hero p { font-size: 1rem; }
-
+  
   .nav-links {
     display: flex;
     flex-direction: column;
@@ -402,28 +413,15 @@ html, body {
     flex-direction: column;
     align-items: flex-start;
     gap: 15px;
-    padding: 15px 0;
   }
 
-  .mini-buttons {
-    width: 100%;
-    flex-wrap: wrap;
-  }
+  .mini-buttons { width: 100%; flex-wrap: wrap; }
+  .mini-buttons button { flex: 1; min-width: 120px; font-size: 0.75rem; }
 
-  .mini-buttons button {
-    flex: 1;
-    min-width: 120px;
-    padding: 12px 10px;
-    font-size: 0.75rem;
-  }
-
-  .measurements-container {
-    grid-template-columns: 1fr;
-    gap: 15px;
-  }
+  .measurements-container { grid-template-columns: 1fr; }
 }
 
-/* Анімація гамбургера */
-.bar.open:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+/* Анімація гамбургера (підправлені значення для висоти 18px) */
+.bar.open:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
 .bar.open:nth-child(2) { opacity: 0; }
-.bar.open:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
+.bar.open:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
