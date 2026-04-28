@@ -12,7 +12,17 @@ const Calculator = () => {
   const [headWidth, setHeadWidth] = useState('16'); 
   const [clientContact, setClientContact] = useState('');
 
-  // ВИПРАВЛЕНО: Оновлюємо все в одному обробнику без useEffect
+  // Генерація чисел для селекторів (наприклад, 54, 54.5, 55...)
+  const generateRange = (start, end, step) => {
+    const range = [];
+    for (let i = start; i <= end; i += step) {
+      const val = Number.isInteger(i) ? i.toString() : i.toFixed(1);
+      range.push(val);
+    }
+    return range;
+  };
+
+  // Зміна шолома з одночасним скиданням опцій (без useEffect)
   const handleHelmetChange = (h) => {
     setSelectedHelmet(h);
     setOptAv(h.options.aventail?.[0] || null);
@@ -29,21 +39,20 @@ const Calculator = () => {
     e.preventDefault();
     if (!clientContact) return alert("Please enter your contact info!");
 
-    // ВИПРАВЛЕНО: Параметри під твій шаблон (image_2d9ed8.png)
     const templateParams = {
       helmet_name: selectedHelmet.name,
-      name: clientContact, // Використовуємо контакт як ім'я
-      email: clientContact, // Для поля Reply To
+      name: clientContact,
       message: `
-        Measurements: Circ ${headCirc}cm, Width ${headWidth}cm.
+        Measurements: Circumference ${headCirc}cm, Width ${headWidth}cm.
         Aventail: ${optAv?.label || 'None'}
         Plates: ${optPlates?.label || 'Standard'}
         Decoration: ${optDecor?.label || 'Classic'}
+        Total Price: €${totalPrice}
       `
     };
 
     emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams, 'YOUR_PUBLIC_KEY')
-      .then(() => alert('Order sent!'))
+      .then(() => alert('Order sent successfully!'))
       .catch(() => alert('Error sending order.'));
   };
 
@@ -64,7 +73,7 @@ const Calculator = () => {
       <div className="spec-card">
         <h3>{selectedHelmet.name} — Configurator</h3>
         <ul className="spec-list">
-          {/* ВИПРАВЛЕНО: Назви Dome та Visor на місці */}
+          {/* Характеристики купола та заборола */}
           <li>
             <strong>Base Specs:</strong> 
             <span>
@@ -73,27 +82,63 @@ const Calculator = () => {
             </span>
           </li>
           
+          {/* Опція Aventail */}
           {selectedHelmet.options.aventail?.length > 0 && (
             <li>
               <strong>Aventail:</strong>
               <div className="mini-buttons">
                 {selectedHelmet.options.aventail.map((a, i) => (
                   <button key={i} className={optAv?.label === a.label ? 'selected' : ''} onClick={() => setOptAv(a)}>
-                    {a.label}
+                    {a.label} {a.priceMod !== 0 && `(+€${a.priceMod})`}
                   </button>
                 ))}
               </div>
             </li>
           )}
 
+          {/* Опція Protective Plates */}
           <li>
             <strong>Protective Plates:</strong>
             <div className="mini-buttons">
               {selectedHelmet.options.plates.map((p, i) => (
                 <button key={i} className={optPlates?.label === p.label ? 'selected' : ''} onClick={() => setOptPlates(p)}>
-                  {p.label}
+                  {p.label} {p.priceMod !== 0 && `(+€${p.priceMod})`}
                 </button>
               ))}
+            </div>
+          </li>
+
+          {/* Опція Decoration (ПОВЕРНУТО) */}
+          <li>
+            <strong>Decoration Finish:</strong>
+            <div className="mini-buttons">
+              {selectedHelmet.options.decoration.map((d, i) => (
+                <button key={i} className={optDecor?.label === d.label ? 'selected' : ''} onClick={() => setOptDecor(d)}>
+                  {d.label} {d.priceMod !== 0 && `(+€${d.priceMod})`}
+                </button>
+              ))}
+            </div>
+          </li>
+
+          <hr className="divider" />
+
+          {/* Заміри (ПОВЕРНУТО) */}
+          <li className="measurements-container">
+            <div className="m-field">
+              <label>Head Circumference (cm)</label>
+              <select className="armor-select" value={headCirc} onChange={(e) => setHeadCirc(e.target.value)}>
+                {generateRange(54, 64, 0.5).map(val => (
+                  <option key={val} value={val}>{val}</option>
+                ))}
+              </select>
+            </div>
+            <div className="m-field">
+              <label>Head Width (cm)</label>
+              <select className="armor-select" value={headWidth} onChange={(e) => setHeadWidth(e.target.value)}>
+                {generateRange(14, 18, 0.5).map(val => (
+                  <option key={val} value={val}>{val}</option>
+                ))}
+              </select>
             </div>
           </li>
         </ul>
