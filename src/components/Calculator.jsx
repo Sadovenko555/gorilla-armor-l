@@ -12,17 +12,8 @@ const Calculator = () => {
   const [headWidth, setHeadWidth] = useState('16'); 
   const [clientContact, setClientContact] = useState('');
 
-  // Функція для чистих чисел (58.0 -> 58)
-  const generateRange = (start, end, step) => {
-    const range = [];
-    for (let i = start; i <= end; i += step) {
-      const val = Number.isInteger(i) ? i.toString() : i.toFixed(1);
-      range.push(val);
-    }
-    return range;
-  };
-
-  const handleHelmetSelect = (h) => {
+  // ВИПРАВЛЕНО: Оновлюємо все в одному обробнику без useEffect
+  const handleHelmetChange = (h) => {
     setSelectedHelmet(h);
     setOptAv(h.options.aventail?.[0] || null);
     setOptPlates(h.options.plates?.[0] || null);
@@ -36,22 +27,24 @@ const Calculator = () => {
 
   const sendOrder = (e) => {
     e.preventDefault();
-    if (!clientContact) return alert("Enter contact info!");
+    if (!clientContact) return alert("Please enter your contact info!");
 
+    // ВИПРАВЛЕНО: Параметри під твій шаблон (image_2d9ed8.png)
     const templateParams = {
       helmet_name: selectedHelmet.name,
-      measurements: `Circumference: ${headCirc}cm, Width: ${headWidth}cm`,
-      options: `Av: ${optAv?.label || 'Std'}, Plates: ${optPlates?.label || 'Std'}, Finish: ${optDecor?.label || 'Std'}`,
-      price: `€${totalPrice}`,
-      contact: clientContact
+      name: clientContact, // Використовуємо контакт як ім'я
+      email: clientContact, // Для поля Reply To
+      message: `
+        Measurements: Circ ${headCirc}cm, Width ${headWidth}cm.
+        Aventail: ${optAv?.label || 'None'}
+        Plates: ${optPlates?.label || 'Standard'}
+        Decoration: ${optDecor?.label || 'Classic'}
+      `
     };
 
     emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams, 'YOUR_PUBLIC_KEY')
-      .then(() => alert('Order sent to Gorilla Armor!'))
-      .catch((err) => {
-        console.error('EmailJS Error:', err);
-        alert('Error sending order.');
-      });
+      .then(() => alert('Order sent!'))
+      .catch(() => alert('Error sending order.'));
   };
 
   return (
@@ -61,7 +54,7 @@ const Calculator = () => {
           <button 
             key={h.id} 
             className={`helmet-tab ${selectedHelmet.id === h.id ? 'active' : ''}`}
-            onClick={() => handleHelmetSelect(h)}
+            onClick={() => handleHelmetChange(h)}
           >
             {h.name}
           </button>
@@ -71,7 +64,7 @@ const Calculator = () => {
       <div className="spec-card">
         <h3>{selectedHelmet.name} — Configurator</h3>
         <ul className="spec-list">
-          {/* ПОВЕРНУВ НАЗВИ ХАРАКТЕРИСТИК */}
+          {/* ВИПРАВЛЕНО: Назви Dome та Visor на місці */}
           <li>
             <strong>Base Specs:</strong> 
             <span>
@@ -81,65 +74,32 @@ const Calculator = () => {
           </li>
           
           {selectedHelmet.options.aventail?.length > 0 && (
-            <li className="option-row">
+            <li>
               <strong>Aventail:</strong>
               <div className="mini-buttons">
                 {selectedHelmet.options.aventail.map((a, i) => (
                   <button key={i} className={optAv?.label === a.label ? 'selected' : ''} onClick={() => setOptAv(a)}>
-                    {a.label} {a.priceMod !== 0 && `(+€${a.priceMod})`}
+                    {a.label}
                   </button>
                 ))}
               </div>
             </li>
           )}
 
-          <li className="option-row">
+          <li>
             <strong>Protective Plates:</strong>
             <div className="mini-buttons">
               {selectedHelmet.options.plates.map((p, i) => (
                 <button key={i} className={optPlates?.label === p.label ? 'selected' : ''} onClick={() => setOptPlates(p)}>
-                  {p.label} {p.priceMod !== 0 && `(+€${p.priceMod})`}
+                  {p.label}
                 </button>
               ))}
-            </div>
-          </li>
-
-          <li className="option-row">
-            <strong>Decoration:</strong>
-            <div className="mini-buttons">
-              {selectedHelmet.options.decoration.map((d, i) => (
-                <button key={i} className={optDecor?.label === d.label ? 'selected' : ''} onClick={() => setOptDecor(d)}>
-                  {d.label} {d.priceMod !== 0 && `(+€${d.priceMod})`}
-                </button>
-              ))}
-            </div>
-          </li>
-
-          <hr className="divider" />
-
-          <li className="measurements-container">
-            <div className="m-field">
-              <label>Head Circumference (cm)</label>
-              <select className="armor-select" value={headCirc} onChange={(e) => setHeadCirc(e.target.value)}>
-                {generateRange(54, 64, 0.5).map(val => (
-                  <option key={val} value={val}>{val}</option>
-                ))}
-              </select>
-            </div>
-            <div className="m-field">
-              <label>Head Width (cm)</label>
-              <select className="armor-select" value={headWidth} onChange={(e) => setHeadWidth(e.target.value)}>
-                {generateRange(14, 18, 0.5).map(val => (
-                  <option key={val} value={val}>{val}</option>
-                ))}
-              </select>
             </div>
           </li>
         </ul>
 
         <div className="order-section">
           <input 
-            type="text" 
             className="calc-input" 
             placeholder="Your Telegram or Email" 
             value={clientContact} 
