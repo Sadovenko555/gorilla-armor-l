@@ -74,7 +74,7 @@ function App() {
         <div className="footer-content">
           <p>GORILLA ARMOR | UKRAINE</p>
           <div className="social-links">
-            <a href="#">Instagram</a>
+            <a href="https://www.instagram.com/gorilla_armor_shop/">Instagram</a>
           </div>
         </div>
       </footer>
