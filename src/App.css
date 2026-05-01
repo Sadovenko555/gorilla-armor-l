@@ -433,3 +433,37 @@ html, body {
 .bar.open:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
 .bar.open:nth-child(2) { opacity: 0; }
 .bar.open:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+
+/* Стили для неактивных бейджей характеристик */
+.spec-badge {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid #333;
+  padding: 8px 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 120px;
+  border-radius: 2px;
+}
+
+.spec-badge small {
+  font-size: 0.65rem;
+  color: var(--primary-red);
+  font-weight: bold;
+  margin-bottom: 2px;
+  letter-spacing: 1px;
+}
+
+.spec-badge span {
+  font-size: 0.9rem;
+  color: #fff;
+  font-weight: 500;
+}
+
+/* На мобилках делаем их на всю ширину, если нужно */
+@media (max-width: 767px) {
+  .spec-badge {
+    flex: 1;
+  }
+}

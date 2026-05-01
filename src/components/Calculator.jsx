@@ -12,7 +12,6 @@ const Calculator = () => {
   const [headWidth, setHeadWidth] = useState('16'); 
   const [clientContact, setClientContact] = useState('');
 
-  // Генерація чисел для селекторів (наприклад, 54, 54.5, 55...)
   const generateRange = (start, end, step) => {
     const range = [];
     for (let i = start; i <= end; i += step) {
@@ -22,7 +21,6 @@ const Calculator = () => {
     return range;
   };
 
-  // Зміна шолома з одночасним скиданням опцій (без useEffect)
   const handleHelmetChange = (h) => {
     setSelectedHelmet(h);
     setOptAv(h.options.aventail?.[0] || null);
@@ -73,16 +71,22 @@ const Calculator = () => {
       <div className="spec-card">
         <h3>{selectedHelmet.name} — Configurator</h3>
         <ul className="spec-list">
-          {/* Характеристики купола та заборола */}
+          
+          {/* ОБНОВЛЕННЫЙ БЛОК: Базовые характеристики в виде бейджей */}
           <li>
-            <strong>Base Specs:</strong> 
-            <span>
-              <strong>Dome:</strong> {selectedHelmet.specs.dome} | 
-              <strong> {selectedHelmet.specs.visor ? 'Visor' : 'Face'}:</strong> {selectedHelmet.specs.visor || selectedHelmet.specs.face}
-            </span>
+            <strong>Base Thickness:</strong>
+            <div className="mini-buttons">
+              <div className="spec-badge">
+                <small>DOME</small>
+                <span>{selectedHelmet.specs.dome}</span>
+              </div>
+              <div className="spec-badge">
+                <small>{selectedHelmet.specs.visor ? 'VISOR' : 'FACE'}</small>
+                <span>{selectedHelmet.specs.visor || selectedHelmet.specs.face}</span>
+              </div>
+            </div>
           </li>
           
-          {/* Опція Aventail */}
           {selectedHelmet.options.aventail?.length > 0 && (
             <li>
               <strong>Aventail:</strong>
@@ -96,7 +100,6 @@ const Calculator = () => {
             </li>
           )}
 
-          {/* Опція Protective Plates */}
           <li>
             <strong>Protective Plates:</strong>
             <div className="mini-buttons">
@@ -108,7 +111,6 @@ const Calculator = () => {
             </div>
           </li>
 
-          {/* Опція Decoration (ПОВЕРНУТО) */}
           <li>
             <strong>Decoration Finish:</strong>
             <div className="mini-buttons">
@@ -122,7 +124,6 @@ const Calculator = () => {
 
           <hr className="divider" />
 
-          {/* Заміри (ПОВЕРНУТО) */}
           <li className="measurements-container">
             <div className="m-field">
               <label>Head Circumference (cm)</label>
