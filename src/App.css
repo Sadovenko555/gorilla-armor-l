@@ -383,6 +383,21 @@ html, body {
   transition: all 0.3s ease;
 }
 
+/* СТАТИЧНА КНОПКА (НЕАКТИВНА) */
+.spec-static-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid #333;
+  color: #777; /* Сірий текст для неактивності */
+  padding: 12px 22px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  border-radius: 2px;
+  cursor: default;
+  user-select: none;
+}
+
+
 @media (max-width: 767px) {
   .hamburger { display: flex; }
   
@@ -425,7 +440,7 @@ html, body {
 
   .mini-buttons { width: 100%; flex-wrap: wrap; }
   .mini-buttons button { flex: 1; min-width: 120px; font-size: 0.75rem; }
-
+ .mini-buttons button, .spec-static-btn { width: 100%; text-align: center; }
   .measurements-container { grid-template-columns: 1fr; }
 }
 

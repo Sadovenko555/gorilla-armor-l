@@ -72,18 +72,19 @@ const Calculator = () => {
         <h3>{selectedHelmet.name} — Configurator</h3>
         <ul className="spec-list">
           
-          {/* ОБНОВЛЕННЫЙ БЛОК: Базовые характеристики в виде бейджей */}
+          {/* Статична опція: Купол */}
           <li>
-            <strong>Base Thickness:</strong>
+            <strong>Dome:</strong>
             <div className="mini-buttons">
-              <div className="spec-badge">
-                <small>DOME</small>
-                <span>{selectedHelmet.specs.dome}</span>
-              </div>
-              <div className="spec-badge">
-                <small>{selectedHelmet.specs.visor ? 'VISOR' : 'FACE'}</small>
-                <span>{selectedHelmet.specs.visor || selectedHelmet.specs.face}</span>
-              </div>
+              <div className="spec-static-btn">{selectedHelmet.specs.dome}</div>
+            </div>
+          </li>
+
+          {/* Статична опція: Забрало */}
+          <li>
+            <strong>{selectedHelmet.specs.visor ? 'Visor' : 'Face'}:</strong>
+            <div className="mini-buttons">
+              <div className="spec-static-btn">{selectedHelmet.specs.visor || selectedHelmet.specs.face}</div>
             </div>
           </li>
           
