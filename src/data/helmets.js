@@ -1,8 +1,8 @@
-// src/data/helmets.js
 export const helmetsData = [
   {
     id: 'spoleto',
     name: 'Spoleto',
+    image: '/images/spoleto.jpg',
     basePrice: 670,
     specs: { dome: '2.5 mm hardened steel', visor: '2 mm hardened steel' },
     options: {
@@ -14,6 +14,7 @@ export const helmetsData = [
   {
     id: 'pigface',
     name: 'Pigface',
+    image: '/images/pigface.png',
     basePrice: 720,
     specs: { dome: '2.5 mm hardened steel', visor: '2 mm hardened steel' },
     options: {
@@ -25,6 +26,7 @@ export const helmetsData = [
   {
     id: 'romance-alexander',
     name: 'Romance Of Alexander',
+    image: '/images/romance-alexander.png',
     basePrice: 720,
     specs: { dome: '2.5 mm hardened steel', visor: '2 mm hardened steel + 1mm Cross' },
     options: {
@@ -36,6 +38,7 @@ export const helmetsData = [
   {
     id: 'wolf-ribs',
     name: 'Wolf Ribs',
+    image: '/images/wolf-ribs.jpg',
     basePrice: 760,
     specs: { dome: '2.5 mm hardened steel', visor: 'Ribs 10 mm and 6 mm' },
     options: {
@@ -47,10 +50,11 @@ export const helmetsData = [
   {
     id: 'english-cross',
     name: 'English Cross',
+    image: '/images/english-cross.jpg',
     basePrice: 790,
     specs: { dome: '2.5 mm hardened steel', face: 'Steel rods 6 and 8 mm', aventail: 'Chain mail (Standard)' },
     options: {
-      aventail: [], // Стандартна кольчуга, без вибору
+      aventail: [],
       plates: [{ label: 'No plates', priceMod: 0 }, { label: 'Steel 1.2 mm', priceMod: 45 }, { label: 'Titanium 0.8 mm', priceMod: 58 }],
       decoration: [{ label: 'Classic Cross', priceMod: 0 }, { label: 'Blackening', priceMod: 15 }, { label: 'Gilding', priceMod: 25 }]
     }
@@ -58,6 +62,7 @@ export const helmetsData = [
   {
     id: 'nasal',
     name: 'Nasal',
+    image: '/images/nasal.png',
     basePrice: 800,
     specs: { dome: '2.5 mm hardened steel', face: 'Rods 6/8 mm + 2mm nose guard', aventail: 'Chain mail (Standard)' },
     options: {

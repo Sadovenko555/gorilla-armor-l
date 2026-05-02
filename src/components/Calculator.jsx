@@ -69,81 +69,92 @@ const Calculator = () => {
       </div>
 
       <div className="spec-card">
-        <h3>{selectedHelmet.name} — Configurator</h3>
-        <ul className="spec-list">
+        <div className="config-main-layout">
           
-          {/* Статична опція: Купол */}
-          <li>
-            <strong>Dome:</strong>
-            <div className="mini-buttons">
-              <div className="spec-static-btn">{selectedHelmet.specs.dome}</div>
-            </div>
-          </li>
+          <div className="helmet-preview">
+            <img 
+              src={selectedHelmet.image} 
+              alt={selectedHelmet.name} 
+              key={selectedHelmet.id} 
+              onError={(e) => { e.target.src = ''; }}
+            />
+          </div>
 
-          {/* Статична опція: Забрало */}
-          <li>
-            <strong>{selectedHelmet.specs.visor ? 'Visor' : 'Face'}:</strong>
-            <div className="mini-buttons">
-              <div className="spec-static-btn">{selectedHelmet.specs.visor || selectedHelmet.specs.face}</div>
-            </div>
-          </li>
-          
-          {selectedHelmet.options.aventail?.length > 0 && (
-            <li>
-              <strong>Aventail:</strong>
-              <div className="mini-buttons">
-                {selectedHelmet.options.aventail.map((a, i) => (
-                  <button key={i} className={optAv?.label === a.label ? 'selected' : ''} onClick={() => setOptAv(a)}>
-                    {a.label} {a.priceMod !== 0 && `(+€${a.priceMod})`}
-                  </button>
-                ))}
-              </div>
-            </li>
-          )}
+          <div className="config-controls">
+            <h3>{selectedHelmet.name} — Configurator</h3>
+            <ul className="spec-list">
+              <li>
+                <strong>Dome:</strong>
+                <div className="mini-buttons">
+                  <div className="spec-static-btn">{selectedHelmet.specs.dome}</div>
+                </div>
+              </li>
 
-          <li>
-            <strong>Protective Plates:</strong>
-            <div className="mini-buttons">
-              {selectedHelmet.options.plates.map((p, i) => (
-                <button key={i} className={optPlates?.label === p.label ? 'selected' : ''} onClick={() => setOptPlates(p)}>
-                  {p.label} {p.priceMod !== 0 && `(+€${p.priceMod})`}
-                </button>
+              <li>
+                <strong>{selectedHelmet.specs.visor ? 'Visor' : 'Face'}:</strong>
+                <div className="mini-buttons">
+                  <div className="spec-static-btn">{selectedHelmet.specs.visor || selectedHelmet.specs.face}</div>
+                </div>
+              </li>
+              
+              {selectedHelmet.options.aventail && selectedHelmet.options.aventail.length > 0 && (
+                <li>
+                  <strong>Aventail:</strong>
+                  <div className="mini-buttons">
+                    {selectedHelmet.options.aventail.map((a, i) => (
+                      <button key={i} className={optAv?.label === a.label ? 'selected' : ''} onClick={() => setOptAv(a)}>
+                        {a.label} {a.priceMod !== 0 && `(+€${a.priceMod})`}
+                      </button>
+                    ))}
+                  </div>
+                </li>
+              )}
+
+              <li>
+                <strong>Protective Plates:</strong>
+                <div className="mini-buttons">
+                  {selectedHelmet.options.plates.map((p, i) => (
+                    <button key={i} className={optPlates?.label === p.label ? 'selected' : ''} onClick={() => setOptPlates(p)}>
+                      {p.label} {p.priceMod !== 0 && `(+€${p.priceMod})`}
+                    </button>
+                  ))}
+                </div>
+              </li>
+
+              <li>
+                <strong>Decoration Finish:</strong>
+                <div className="mini-buttons">
+                  {selectedHelmet.options.decoration.map((d, i) => (
+                    <button key={i} className={optDecor?.label === d.label ? 'selected' : ''} onClick={() => setOptDecor(d)}>
+                      {d.label} {d.priceMod !== 0 && `(+€${d.priceMod})`}
+                    </button>
+                  ))}
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <hr className="divider" />
+
+        <div className="measurements-container">
+          <div className="m-field">
+            <label>Head Circumference (cm)</label>
+            <select className="armor-select" value={headCirc} onChange={(e) => setHeadCirc(e.target.value)}>
+              {generateRange(54, 64, 0.5).map(val => (
+                <option key={val} value={val}>{val}</option>
               ))}
-            </div>
-          </li>
-
-          <li>
-            <strong>Decoration Finish:</strong>
-            <div className="mini-buttons">
-              {selectedHelmet.options.decoration.map((d, i) => (
-                <button key={i} className={optDecor?.label === d.label ? 'selected' : ''} onClick={() => setOptDecor(d)}>
-                  {d.label} {d.priceMod !== 0 && `(+€${d.priceMod})`}
-                </button>
+            </select>
+          </div>
+          <div className="m-field">
+            <label>Head Width (cm)</label>
+            <select className="armor-select" value={headWidth} onChange={(e) => setHeadWidth(e.target.value)}>
+              {generateRange(14, 18, 0.5).map(val => (
+                <option key={val} value={val}>{val}</option>
               ))}
-            </div>
-          </li>
-
-          <hr className="divider" />
-
-          <li className="measurements-container">
-            <div className="m-field">
-              <label>Head Circumference (cm)</label>
-              <select className="armor-select" value={headCirc} onChange={(e) => setHeadCirc(e.target.value)}>
-                {generateRange(54, 64, 0.5).map(val => (
-                  <option key={val} value={val}>{val}</option>
-                ))}
-              </select>
-            </div>
-            <div className="m-field">
-              <label>Head Width (cm)</label>
-              <select className="armor-select" value={headWidth} onChange={(e) => setHeadWidth(e.target.value)}>
-                {generateRange(14, 18, 0.5).map(val => (
-                  <option key={val} value={val}>{val}</option>
-                ))}
-              </select>
-            </div>
-          </li>
-        </ul>
+            </select>
+          </div>
+        </div>
 
         <div className="order-section">
           <input 
