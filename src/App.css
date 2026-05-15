@@ -266,3 +266,73 @@ html, body {
 .bar.open:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
 .bar.open:nth-child(2) { opacity: 0; }
 .bar.open:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+
+/* --- Нові стилі для вибору кольору та цін тканин --- */
+
+.color-picker-grid {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  width: 100%;
+}
+
+.color-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #444;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.color-dot:hover {
+  transform: scale(1.1);
+  border-color: #888;
+}
+
+.color-dot.active {
+  border-color: #fff;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+  transform: scale(1.1);
+}
+
+.selected-color-name {
+  font-size: 0.75rem;
+  color: var(--text-main);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-left: 5px;
+  font-weight: 600;
+}
+
+.pattern-price {
+  font-size: 0.6rem;
+  color: var(--primary-red);
+  font-weight: bold;
+  margin-top: 2px;
+  letter-spacing: 0.5px;
+}
+
+.pattern-card.active .pattern-price {
+  color: #ff4d4d;
+}
+
+/* Оновлення медіа-запитів для коректного відображення колірної палітри на мобільних */
+@media (max-width: 900px) {
+  .color-picker-grid {
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+  }
+  
+  .selected-color-name {
+    width: 100%;
+    text-align: center;
+    margin-top: 5px;
+    margin-left: 0;
+  }
+}

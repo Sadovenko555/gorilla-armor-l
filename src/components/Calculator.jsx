@@ -2,14 +2,31 @@ import { useState } from 'react';
 import { helmetsData } from '../data/helmets';
 import emailjs from '@emailjs/browser';
 
-// Компонент графічних іконок для візерунків тканини на основі твого ескізу
-const PatternIcon = ({ type }) => {
-  const colorBase = "#252525"; // Темна основа
-  const colorPattern = "var(--primary-red)"; // Червоний колір візерунка
+// Об'єкт з цінами для кожного візерунка тканини
+const patternPrices = {
+  'Solid': 0,
+  'Two-colored': 5,
+  'Quartered': 7,
+  'Bordered': 6
+};
+
+// Список доступних кольорів для тканини
+const fabricColors = [
+  { name: 'Red', hex: '#8b0000' },
+  { name: 'Black', hex: '#222222' },
+  { name: 'Blue', hex: '#1a365d' },
+  { name: 'Green', hex: '#1c4532' },
+  { name: 'White', hex: '#d9d9d9' }
+];
+
+// Компонент іконок, який тепер приймає обраний hex-колір
+const PatternIcon = ({ type, colorHex }) => {
+  const colorBase = "#111111"; // Базовий темний колір для розділення
+  const colorPattern = colorHex; // Динамічний колір, який обрав користувач
 
   return (
     <svg width="44" height="44" viewBox="0 0 100 100" style={{ display: 'block' }}>
-      {/* Зовнішнє тонке кільце-обводка */}
+      {/* Зовнішнє тонке кільце */}
       <circle cx="50" cy="50" r="47" fill="none" stroke="#444" strokeWidth="2" />
       
       {/* 1. Цельний (Solid) */}
@@ -17,7 +34,7 @@ const PatternIcon = ({ type }) => {
         <circle cx="50" cy="50" r="44" fill={colorPattern} />
       )}
 
-      {/* 2. Двохколірний вертикальний (Two-colored) */}
+      {/* 2. Двохколірний вертикальний (Split) */}
       {type === 'two-colored' && (
         <>
           <circle cx="50" cy="50" r="44" fill={colorBase} />
@@ -29,9 +46,7 @@ const PatternIcon = ({ type }) => {
       {type === 'quartered' && (
         <>
           <circle cx="50" cy="50" r="44" fill={colorBase} />
-          {/* Верхня ліва чверть */}
           <path d="M 50 50 L 6 50 A 44 44 0 0 1 50 6 Z" fill={colorPattern} />
-          {/* Нижня права чверть */}
           <path d="M 50 50 L 94 50 A 44 44 0 0 1 50 94 Z" fill={colorPattern} />
         </>
       )}
@@ -53,8 +68,9 @@ const Calculator = () => {
   const [optPlates, setOptPlates] = useState(helmetsData[0].options.plates?.[0] || null);
   const [optDecor, setOptDecor] = useState(helmetsData[0].options.decoration?.[0] || null);
   
-  // Новий стейт для типу візерунка тканини
+  // Стейти для тканини (візерунок та колір)
   const [fabricPattern, setFabricPattern] = useState('Solid');
+  const [selectedColor, setSelectedColor] = useState(fabricColors[0]); // Дефолтний: Червоний
 
   const [headCirc, setHeadCirc] = useState('58'); 
   const [headWidth, setHeadWidth] = useState('16'); 
@@ -75,11 +91,17 @@ const Calculator = () => {
     setOptAv(defaultAv);
     setOptPlates(h.options.plates?.[0] || null);
     setOptDecor(h.options.decoration?.[0] || null);
-    setFabricPattern('Solid'); // скидуємо на дефолт при зміні шолома
+    setFabricPattern('Solid'); 
+    setSelectedColor(fabricColors[0]);
   };
 
+  // Розрахунок модифікатора ціни для візерунка тканини
+  const patternPriceMod = optAv?.label.includes('Fabric') ? (patternPrices[fabricPattern] || 0) : 0;
+
+  // Загальна ціна тепер враховує базову ціну + опції + модифікатор тканини
   const totalPrice = selectedHelmet.basePrice + 
     (optAv?.priceMod || 0) + 
+    patternPriceMod +
     (optPlates?.priceMod || 0) + 
     (optDecor?.priceMod || 0);
 
@@ -87,9 +109,8 @@ const Calculator = () => {
     e.preventDefault();
     if (!clientContact) return alert("Please enter your contact info!");
 
-    // Формуємо рядок авентайла з урахуванням типу тканини
     const aventailDetails = optAv 
-      ? `${optAv.label}${optAv.label.includes('Fabric') ? ` (Pattern: ${fabricPattern})` : ''}`
+      ? `${optAv.label}${optAv.label.includes('Fabric') ? ` (Pattern: ${fabricPattern}, Base Color: ${selectedColor.name})` : ''}`
       : 'None (Standard Chain Mail)';
 
     const templateParams = {
@@ -155,7 +176,6 @@ const Calculator = () => {
               <li>
                 <strong>Aventail:</strong>
                 <div className="spec-options-wrapper">
-                  {/* Перевірка чи є взагалі опції вибору опцій кольчуги/тканини */}
                   {selectedHelmet.options.aventail && selectedHelmet.options.aventail.length > 0 ? (
                     <div className="mini-buttons">
                       {selectedHelmet.options.aventail.map((a, i) => (
@@ -165,30 +185,48 @@ const Calculator = () => {
                       ))}
                     </div>
                   ) : (
-                    /* Якщо масив порожній (як у English Cross), виводимо статичний кастомний напис */
                     <div className="mini-buttons">
                       <div className="spec-static-btn">{selectedHelmet.specs.aventail || 'Chain Mail (Standard)'}</div>
                     </div>
                   )}
 
-                  {/* Додатковий графічний вибір візерунка, якщо активована тканина */}
+                  {/* Розширений блок налаштування тканини */}
                   {optAv?.label.includes('Fabric') && (
                     <div className="fabric-patterns-container">
-                      <span className="pattern-section-title">Fabric Pattern:</span>
+                      
+                      {/* Вибір кольору авентайла */}
+                      <span className="pattern-section-title">Fabric Color:</span>
+                      <div className="color-picker-grid">
+                        {fabricColors.map((color) => (
+                          <button
+                            key={color.name}
+                            className={`color-dot ${selectedColor.name === color.name ? 'active' : ''}`}
+                            style={{ backgroundColor: color.hex }}
+                            title={color.name}
+                            onClick={() => setSelectedColor(color)}
+                          />
+                        ))}
+                        <span className="selected-color-name">{selectedColor.name}</span>
+                      </div>
+
+                      {/* Вибір візерунка з новими цінами */}
+                      <span className="pattern-section-title" style={{ marginTop: '5px' }}>Fabric Pattern:</span>
                       <div className="pattern-grid">
                         {[
-                          { id: 'Solid', label: 'Solid' },
-                          { id: 'Two-colored', label: 'Split' },
-                          { id: 'Quartered', label: 'Quartered' },
-                          { id: 'Bordered', label: 'Bordered' }
+                          { id: 'Solid', label: 'Solid', price: 0 },
+                          { id: 'Two-colored', label: 'Split', price: 5 },
+                          { id: 'Quartered', label: 'Quarter', price: 7 },
+                          { id: 'Bordered', label: 'Border', price: 6 }
                         ].map((p) => (
                           <div 
                             key={p.id} 
                             className={`pattern-card ${fabricPattern === p.id ? 'active' : ''}`}
                             onClick={() => setFabricPattern(p.id)}
                           >
-                            <PatternIcon type={p.id.toLowerCase()} />
+                            {/* Передаємо поточний колір у фігуру SVG */}
+                            <PatternIcon type={p.id.toLowerCase()} colorHex={selectedColor.hex} />
                             <span className="pattern-label">{p.label}</span>
+                            <span className="pattern-price">{p.price === 0 ? 'Free' : `+€${p.price}`}</span>
                           </div>
                         ))}
                       </div>
