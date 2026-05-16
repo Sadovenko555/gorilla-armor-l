@@ -46,7 +46,7 @@ const PatternIcon = ({ type, primaryHex, secondaryHex }) => {
       {type === 'bordered' && (
         <>
           <circle cx="50" cy="50" r="44" fill={sColor} />
-          <circle cx="50" cy="50" r="32" fill={pColor} />
+          <circle cx="50" cy="50" r="36" fill={pColor} />
         </>
       )}
       <circle cx="50" cy="50" r="16" fill="#151515" stroke="#444" strokeWidth="2" />
