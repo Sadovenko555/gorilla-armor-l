@@ -417,3 +417,93 @@ html, body {
     margin: 0 auto 15px auto;
   }
 }
+
+/* Додатковий стиль для великого текстового поля нотаток */
+textarea.calc-input.text-area-input {
+  resize: vertical;
+  min-height: 80px;
+  max-height: 200px;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+
+/* --- Оновлені стилі вирівнювання кольорів та палітри --- */
+
+.color-section-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  text-align: left;
+}
+
+.color-picker-grid {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.color-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.color-dot:hover {
+  transform: scale(1.15);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.color-dot.active {
+  border-color: #fff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), inset 0 0 0 2px #000;
+  transform: scale(1.15);
+}
+
+/* Назва кольору тепер акуратно стоїть у рядку заголовка */
+.selected-color-name {
+  font-size: 0.75rem;
+  color: #ff4d4d; /* Контрастний акцентний колір для назви */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+.pattern-price {
+  font-size: 0.6rem;
+  color: var(--primary-red);
+  font-weight: bold;
+  margin-top: 2px;
+  letter-spacing: 0.5px;
+}
+
+.pattern-card.active .pattern-price {
+  color: #ff4d4d;
+}
+
+textarea.calc-input.text-area-input {
+  resize: vertical;
+  min-height: 80px;
+  max-height: 200px;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+@media (max-width: 900px) {
+  .color-section-header {
+    justify-content: center;
+  }
+  .color-picker-grid {
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+}

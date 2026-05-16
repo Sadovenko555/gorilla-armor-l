@@ -7,6 +7,7 @@ const fabricColors = [
   { name: 'White', hex: '#ffffff' },
   { name: 'Grey', hex: '#737373' },
   { name: 'Red', hex: '#8b0000' },
+  { name: 'Orange', hex: '#e65c00' },
   { name: 'Yellow', hex: '#eab308' },
   { name: 'Blue', hex: '#1e3a8a' },
   { name: 'Green', hex: '#14532d' },
@@ -22,18 +23,19 @@ const patternPrices = {
   'Bordered': 6
 };
 
+// Оновлений компонент іконок з урахуванням центрального вирізу з ескізу
 const PatternIcon = ({ type, primaryHex, secondaryHex }) => {
   const pColor = primaryHex;
   const sColor = secondaryHex || "#111111";
 
   return (
     <svg width="44" height="44" viewBox="0 0 100 100" style={{ display: 'block' }}>
-      <circle cx="50" cy="50" r="47" fill="none" stroke="#444" strokeWidth="2" />
-      
+      {/* 1. Суцільний (Solid) */}
       {type === 'solid' && (
         <circle cx="50" cy="50" r="44" fill={pColor} />
       )}
 
+      {/* 2. Вертикальний спліт (Split) */}
       {type === 'two-colored' && (
         <>
           <circle cx="50" cy="50" r="44" fill={sColor} />
@@ -41,6 +43,7 @@ const PatternIcon = ({ type, primaryHex, secondaryHex }) => {
         </>
       )}
 
+      {/* 3. Четверті (Quartered) */}
       {type === 'quartered' && (
         <>
           <circle cx="50" cy="50" r="44" fill={sColor} />
@@ -49,12 +52,19 @@ const PatternIcon = ({ type, primaryHex, secondaryHex }) => {
         </>
       )}
 
+      {/* 4. З каймою (Bordered) — за ескізом кайма йде по зовнішньому колу */}
       {type === 'bordered' && (
         <>
           <circle cx="50" cy="50" r="44" fill={sColor} />
-          <circle cx="50" cy="50" r="30" fill={pColor} />
+          <circle cx="50" cy="50" r="32" fill={pColor} />
         </>
       )}
+      
+      {/* ЦЕНТРАЛЬНИЙ ВИРІЗ (Ескізне внутрішнє коло для форми авентайла) */}
+      <circle cx="50" cy="50" r="16" fill="#151515" stroke="#444" strokeWidth="2" />
+      
+      {/* Зовнішнє тонке кільце-обводка */}
+      <circle cx="50" cy="50" r="47" fill="none" stroke="#444" strokeWidth="2" />
     </svg>
   );
 };
@@ -72,13 +82,13 @@ const Calculator = () => {
   const [headCirc, setHeadCirc] = useState('58'); 
   const [headWidth, setHeadWidth] = useState('16'); 
 
-  // Нові стейти для форми персональних даних та доставки
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [country, setCountry] = useState('');
   const [city, setCity] = useState('');
   const [address, setAddress] = useState('');
   const [zipCode, setZipCode] = useState('');
+  const [notes, setNotes] = useState('');
 
   const generateRange = (start, end, step) => {
     const range = [];
@@ -111,7 +121,6 @@ const Calculator = () => {
   const sendOrder = (e) => {
     e.preventDefault();
     
-    // Перевірка заповнення обов'язкових полів
     if (!fullName || !email || !country || !city || !address || !zipCode) {
       return alert("Please fill in all the shipping and contact details!");
     }
@@ -124,7 +133,6 @@ const Calculator = () => {
       ? `${optAv.label}${optAv.label.includes('Fabric') ? ` (Pattern: ${fabricPattern}, ${colorDetails})` : ''}`
       : 'None (Standard Chain Mail)';
 
-    // Передаємо всі дані окремими параметрами для гнучкого налаштування EmailJS
     const templateParams = {
       helmet_name: selectedHelmet.name,
       client_name: fullName,
@@ -133,11 +141,13 @@ const Calculator = () => {
       shipping_city: city,
       shipping_address: address,
       shipping_zip: zipCode,
+      client_notes: notes || 'No additional notes',
       message: `
         Measurements: Circumference ${headCirc}cm, Width ${headWidth}cm.
         Aventail: ${aventailDetails}
         Plates: ${optPlates?.label || 'Standard'}
         Decoration: ${optDecor?.label || 'Classic'}
+        Notes: ${notes || 'None'}
         Total Price: €${totalPrice}
       `
     };
@@ -145,8 +155,7 @@ const Calculator = () => {
     emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams, 'YOUR_PUBLIC_KEY')
       .then(() => {
         alert('Order sent successfully!');
-        // Очищення форми після успішної відправки
-        setFullName(''); setEmail(''); setCountry(''); setCity(''); setAddress(''); setZipCode('');
+        setFullName(''); setEmail(''); setCountry(''); setCity(''); setAddress(''); setZipCode(''); setNotes('');
       })
       .catch(() => alert('Error sending order.'));
   };
@@ -213,7 +222,12 @@ const Calculator = () => {
 
                   {optAv?.label.includes('Fabric') && (
                     <div className="fabric-patterns-container">
-                      <span className="pattern-section-title">Main Color:</span>
+                      
+                      {/* ЗАГОЛОВОК ПЕРШОГО КОЛЬОРУ З НАЗВОЮ ПОРУЧ */}
+                      <div className="color-section-header">
+                        <span className="pattern-section-title">Main Color:</span>
+                        <span className="selected-color-name">{primaryColor.name}</span>
+                      </div>
                       <div className="color-picker-grid">
                         {fabricColors.map((color) => (
                           <button
@@ -224,12 +238,15 @@ const Calculator = () => {
                             onClick={() => setPrimaryColor(color)}
                           />
                         ))}
-                        <span className="selected-color-name">{primaryColor.name}</span>
                       </div>
 
+                      {/* ЗАГОЛОВОК ДРУГОГО КОЛЬОРУ З НАЗВОЮ ПОРУЧ */}
                       {fabricPattern !== 'Solid' && (
                         <>
-                          <span className="pattern-section-title" style={{ marginTop: '4px' }}>Secondary Color:</span>
+                          <div className="color-section-header" style={{ marginTop: '8px' }}>
+                            <span className="pattern-section-title">Secondary Color:</span>
+                            <span className="selected-color-name">{secondaryColor.name}</span>
+                          </div>
                           <div className="color-picker-grid">
                             {fabricColors.map((color) => (
                               <button
@@ -240,12 +257,11 @@ const Calculator = () => {
                                 onClick={() => setSecondaryColor(color)}
                               />
                             ))}
-                            <span className="selected-color-name">{secondaryColor.name}</span>
                           </div>
                         </>
                       )}
 
-                      <span className="pattern-section-title" style={{ marginTop: '6px' }}>Fabric Pattern:</span>
+                      <span className="pattern-section-title" style={{ marginTop: '10px', display: 'block' }}>Fabric Pattern:</span>
                       <div className="pattern-grid">
                         {[
                           { id: 'Solid', label: 'Solid', price: 0 },
@@ -319,7 +335,6 @@ const Calculator = () => {
           </div>
         </div>
 
-        {/* Секція оформлення замовлення з новими полями доставки */}
         <div className="order-section">
           <h4 className="order-section-title">Shipping & Contact Details</h4>
           
@@ -353,8 +368,7 @@ const Calculator = () => {
                 className="calc-input" 
                 placeholder="France" 
                 value={country} 
-                onChange={(e) => setCountry} 
-                onInput={(e) => setCountry(e.target.value)}
+                onChange={(e) => setCountry(e.target.value)} 
               />
             </div>
 
@@ -388,6 +402,17 @@ const Calculator = () => {
                 placeholder="75001" 
                 value={zipCode} 
                 onChange={(e) => setZipCode(e.target.value)} 
+              />
+            </div>
+
+            <div className="input-group full-width">
+              <label>Notes / Custom Requests (Optional)</label>
+              <textarea 
+                className="calc-input text-area-input" 
+                rows="3"
+                placeholder="Add any specific requirements, custom padding details or armor modifications..." 
+                value={notes} 
+                onChange={(e) => setNotes(e.target.value)} 
               />
             </div>
           </div>
