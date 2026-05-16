@@ -268,45 +268,46 @@ html, body {
 .bar.open:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
 
 
-/* --- Нові стилі для вибору кольору та цін тканин --- */
+/* --- Стилі для кастомізації палітри кольорів тканини --- */
 
 .color-picker-grid {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
+  gap: 8px;
+  margin-bottom: 10px;
   width: 100%;
+  flex-wrap: wrap; /* Дозволяє 10 кольорам гарно переноситись */
 }
 
 .color-dot {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
-  border: 2px solid #444;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   cursor: pointer;
   padding: 0;
-  transition: all 0.2s ease;
-  position: relative;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .color-dot:hover {
-  transform: scale(1.1);
-  border-color: #888;
+  transform: scale(1.15);
+  border-color: rgba(255, 255, 255, 0.6);
 }
 
 .color-dot.active {
   border-color: #fff;
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
-  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), inset 0 0 0 2px #000;
+  transform: scale(1.15);
 }
 
 .selected-color-name {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: var(--text-main);
   text-transform: uppercase;
   letter-spacing: 1px;
-  margin-left: 5px;
+  margin-left: 6px;
   font-weight: 600;
+  min-width: 70px; /* Запобігає різким зсувам тексту */
 }
 
 .pattern-price {
@@ -321,18 +322,19 @@ html, body {
   color: #ff4d4d;
 }
 
-/* Оновлення медіа-запитів для коректного відображення колірної палітри на мобільних */
+/* Мобільна адаптація для розширеної палітри */
 @media (max-width: 900px) {
   .color-picker-grid {
     justify-content: center;
-    flex-wrap: wrap;
-    margin-bottom: 15px;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding: 0 10px;
   }
   
   .selected-color-name {
     width: 100%;
     text-align: center;
-    margin-top: 5px;
+    margin-top: 4px;
     margin-left: 0;
   }
 }

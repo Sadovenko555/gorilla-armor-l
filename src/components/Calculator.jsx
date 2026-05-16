@@ -2,7 +2,20 @@ import { useState } from 'react';
 import { helmetsData } from '../data/helmets';
 import emailjs from '@emailjs/browser';
 
-// Об'єкт з цінами для кожного візерунка тканини
+// Розширена палітра з 10 кольорів
+const fabricColors = [
+  { name: 'Black', hex: '#1a1a1a' },
+  { name: 'White', hex: '#ffffff' },
+  { name: 'Grey', hex: '#737373' },
+  { name: 'Red', hex: '#8b0000' },
+  { name: 'Yellow', hex: '#eab308' },
+  { name: 'Blue', hex: '#1e3a8a' },
+  { name: 'Green', hex: '#14532d' },
+  { name: 'Purple', hex: '#581c87' },
+  { name: 'Light Blue', hex: '#0284c7' },
+  { name: 'Brown', hex: '#451a03' }
+];
+
 const patternPrices = {
   'Solid': 0,
   'Two-colored': 5,
@@ -10,52 +23,43 @@ const patternPrices = {
   'Bordered': 6
 };
 
-// Список доступних кольорів для тканини
-const fabricColors = [
-  { name: 'Red', hex: '#8b0000' },
-  { name: 'Black', hex: '#222222' },
-  { name: 'Blue', hex: '#1a365d' },
-  { name: 'Green', hex: '#1c4532' },
-  { name: 'White', hex: '#d9d9d9' }
-];
-
-// Компонент іконок, який тепер приймає обраний hex-колір
-const PatternIcon = ({ type, colorHex }) => {
-  const colorBase = "#111111"; // Базовий темний колір для розділення
-  const colorPattern = colorHex; // Динамічний колір, який обрав користувач
+// Компонент іконки, який тепер приймає два кольори одночасно
+const PatternIcon = ({ type, primaryHex, secondaryHex }) => {
+  const pColor = primaryHex;
+  const sColor = secondaryHex || "#111111";
 
   return (
     <svg width="44" height="44" viewBox="0 0 100 100" style={{ display: 'block' }}>
-      {/* Зовнішнє тонке кільце */}
+      {/* Зовнішнє тонке кільце-обводка */}
       <circle cx="50" cy="50" r="47" fill="none" stroke="#444" strokeWidth="2" />
       
       {/* 1. Цельний (Solid) */}
       {type === 'solid' && (
-        <circle cx="50" cy="50" r="44" fill={colorPattern} />
+        <circle cx="50" cy="50" r="44" fill={pColor} />
       )}
 
       {/* 2. Двохколірний вертикальний (Split) */}
       {type === 'two-colored' && (
         <>
-          <circle cx="50" cy="50" r="44" fill={colorBase} />
-          <path d="M 50 6 A 44 44 0 0 0 50 94 Z" fill={colorPattern} />
+          <circle cx="50" cy="50" r="44" fill={sColor} />
+          <path d="M 50 6 A 44 44 0 0 0 50 94 Z" fill={pColor} />
         </>
       )}
 
       {/* 3. Поділений на 4 частини (Quartered) */}
       {type === 'quartered' && (
         <>
-          <circle cx="50" cy="50" r="44" fill={colorBase} />
-          <path d="M 50 50 L 6 50 A 44 44 0 0 1 50 6 Z" fill={colorPattern} />
-          <path d="M 50 50 L 94 50 A 44 44 0 0 1 50 94 Z" fill={colorPattern} />
+          <circle cx="50" cy="50" r="44" fill={sColor} />
+          <path d="M 50 50 L 6 50 A 44 44 0 0 1 50 6 Z" fill={pColor} />
+          <path d="M 50 50 L 94 50 A 44 44 0 0 1 50 94 Z" fill={pColor} />
         </>
       )}
 
-      {/* 4. З каймою по низу (Bordered) */}
+      {/* 4. З каймою по низу (Bordered) — другий колір йде на зовнішнє коло (низ) */}
       {type === 'bordered' && (
         <>
-          <circle cx="50" cy="50" r="44" fill={colorPattern} />
-          <circle cx="50" cy="50" r="30" fill={colorBase} />
+          <circle cx="50" cy="50" r="44" fill={sColor} />
+          <circle cx="50" cy="50" r="30" fill={pColor} />
         </>
       )}
     </svg>
@@ -68,9 +72,10 @@ const Calculator = () => {
   const [optPlates, setOptPlates] = useState(helmetsData[0].options.plates?.[0] || null);
   const [optDecor, setOptDecor] = useState(helmetsData[0].options.decoration?.[0] || null);
   
-  // Стейти для тканини (візерунок та колір)
+  // Стейти для тканини
   const [fabricPattern, setFabricPattern] = useState('Solid');
-  const [selectedColor, setSelectedColor] = useState(fabricColors[0]); // Дефолтний: Червоний
+  const [primaryColor, setPrimaryColor] = useState(fabricColors[3]); // Дефолт: Червоний
+  const [secondaryColor, setSecondaryColor] = useState(fabricColors[0]); // Дефолт: Чорний
 
   const [headCirc, setHeadCirc] = useState('58'); 
   const [headWidth, setHeadWidth] = useState('16'); 
@@ -92,13 +97,12 @@ const Calculator = () => {
     setOptPlates(h.options.plates?.[0] || null);
     setOptDecor(h.options.decoration?.[0] || null);
     setFabricPattern('Solid'); 
-    setSelectedColor(fabricColors[0]);
+    setPrimaryColor(fabricColors[3]);
+    setSecondaryColor(fabricColors[0]);
   };
 
-  // Розрахунок модифікатора ціни для візерунка тканини
   const patternPriceMod = optAv?.label.includes('Fabric') ? (patternPrices[fabricPattern] || 0) : 0;
 
-  // Загальна ціна тепер враховує базову ціну + опції + модифікатор тканини
   const totalPrice = selectedHelmet.basePrice + 
     (optAv?.priceMod || 0) + 
     patternPriceMod +
@@ -109,8 +113,13 @@ const Calculator = () => {
     e.preventDefault();
     if (!clientContact) return alert("Please enter your contact info!");
 
+    // Формуємо деталі кольорів залежно від візерунка
+    const colorDetails = fabricPattern === 'Solid' 
+      ? `Color: ${primaryColor.name}`
+      : `Main Color: ${primaryColor.name}, Secondary Color: ${secondaryColor.name}`;
+
     const aventailDetails = optAv 
-      ? `${optAv.label}${optAv.label.includes('Fabric') ? ` (Pattern: ${fabricPattern}, Base Color: ${selectedColor.name})` : ''}`
+      ? `${optAv.label}${optAv.label.includes('Fabric') ? ` (Pattern: ${fabricPattern}, ${colorDetails})` : ''}`
       : 'None (Standard Chain Mail)';
 
     const templateParams = {
@@ -190,27 +199,46 @@ const Calculator = () => {
                     </div>
                   )}
 
-                  {/* Розширений блок налаштування тканини */}
+                  {/* Блок кастомізації тканини */}
                   {optAv?.label.includes('Fabric') && (
                     <div className="fabric-patterns-container">
                       
-                      {/* Вибір кольору авентайла */}
-                      <span className="pattern-section-title">Fabric Color:</span>
+                      {/* ПЕРШИЙ КОЛІР */}
+                      <span className="pattern-section-title">Main Color:</span>
                       <div className="color-picker-grid">
                         {fabricColors.map((color) => (
                           <button
-                            key={color.name}
-                            className={`color-dot ${selectedColor.name === color.name ? 'active' : ''}`}
+                            key={`primary-${color.name}`}
+                            className={`color-dot ${primaryColor.name === color.name ? 'active' : ''}`}
                             style={{ backgroundColor: color.hex }}
                             title={color.name}
-                            onClick={() => setSelectedColor(color)}
+                            onClick={() => setPrimaryColor(color)}
                           />
                         ))}
-                        <span className="selected-color-name">{selectedColor.name}</span>
+                        <span className="selected-color-name">{primaryColor.name}</span>
                       </div>
 
-                      {/* Вибір візерунка з новими цінами */}
-                      <span className="pattern-section-title" style={{ marginTop: '5px' }}>Fabric Pattern:</span>
+                      {/* ДРУГИЙ КОЛІР (показується тільки якщо обрано не суцільний візерунок) */}
+                      {fabricPattern !== 'Solid' && (
+                        <>
+                          <span className="pattern-section-title" style={{ marginTop: '4px' }}>Secondary Color:</span>
+                          <div className="color-picker-grid">
+                            {fabricColors.map((color) => (
+                              <button
+                                key={`secondary-${color.name}`}
+                                className={`color-dot ${secondaryColor.name === color.name ? 'active' : ''}`}
+                                style={{ backgroundColor: color.hex }}
+                                title={color.name}
+                                onClick={() => setSecondaryColor(color)}
+                              />
+                            ))}
+                            <span className="selected-color-name">{secondaryColor.name}</span>
+                          </div>
+                        </>
+                      )}
+
+                      {/* ВИБІР ВІЗЕРУНКА */}
+                      <span className="pattern-section-title" style={{ marginTop: '6px' }}>Fabric Pattern:</span>
                       <div className="pattern-grid">
                         {[
                           { id: 'Solid', label: 'Solid', price: 0 },
@@ -223,8 +251,12 @@ const Calculator = () => {
                             className={`pattern-card ${fabricPattern === p.id ? 'active' : ''}`}
                             onClick={() => setFabricPattern(p.id)}
                           >
-                            {/* Передаємо поточний колір у фігуру SVG */}
-                            <PatternIcon type={p.id.toLowerCase()} colorHex={selectedColor.hex} />
+                            {/* Передаємо обидва кольори в SVG фігуру */}
+                            <PatternIcon 
+                              type={p.id.toLowerCase()} 
+                              primaryHex={primaryColor.hex} 
+                              secondaryHex={secondaryColor.hex} 
+                            />
                             <span className="pattern-label">{p.label}</span>
                             <span className="pattern-price">{p.price === 0 ? 'Free' : `+€${p.price}`}</span>
                           </div>
