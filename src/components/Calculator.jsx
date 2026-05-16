@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { helmetsData } from '../data/helmets';
 import emailjs from '@emailjs/browser';
 
-// Розширена палітра з 10 кольорів
 const fabricColors = [
   { name: 'Black', hex: '#1a1a1a' },
   { name: 'White', hex: '#ffffff' },
@@ -23,22 +22,18 @@ const patternPrices = {
   'Bordered': 6
 };
 
-// Компонент іконки, який тепер приймає два кольори одночасно
 const PatternIcon = ({ type, primaryHex, secondaryHex }) => {
   const pColor = primaryHex;
   const sColor = secondaryHex || "#111111";
 
   return (
     <svg width="44" height="44" viewBox="0 0 100 100" style={{ display: 'block' }}>
-      {/* Зовнішнє тонке кільце-обводка */}
       <circle cx="50" cy="50" r="47" fill="none" stroke="#444" strokeWidth="2" />
       
-      {/* 1. Цельний (Solid) */}
       {type === 'solid' && (
         <circle cx="50" cy="50" r="44" fill={pColor} />
       )}
 
-      {/* 2. Двохколірний вертикальний (Split) */}
       {type === 'two-colored' && (
         <>
           <circle cx="50" cy="50" r="44" fill={sColor} />
@@ -46,7 +41,6 @@ const PatternIcon = ({ type, primaryHex, secondaryHex }) => {
         </>
       )}
 
-      {/* 3. Поділений на 4 частини (Quartered) */}
       {type === 'quartered' && (
         <>
           <circle cx="50" cy="50" r="44" fill={sColor} />
@@ -55,7 +49,6 @@ const PatternIcon = ({ type, primaryHex, secondaryHex }) => {
         </>
       )}
 
-      {/* 4. З каймою по низу (Bordered) — другий колір йде на зовнішнє коло (низ) */}
       {type === 'bordered' && (
         <>
           <circle cx="50" cy="50" r="44" fill={sColor} />
@@ -72,14 +65,20 @@ const Calculator = () => {
   const [optPlates, setOptPlates] = useState(helmetsData[0].options.plates?.[0] || null);
   const [optDecor, setOptDecor] = useState(helmetsData[0].options.decoration?.[0] || null);
   
-  // Стейти для тканини
   const [fabricPattern, setFabricPattern] = useState('Solid');
-  const [primaryColor, setPrimaryColor] = useState(fabricColors[3]); // Дефолт: Червоний
-  const [secondaryColor, setSecondaryColor] = useState(fabricColors[0]); // Дефолт: Чорний
+  const [primaryColor, setPrimaryColor] = useState(fabricColors[3]); 
+  const [secondaryColor, setSecondaryColor] = useState(fabricColors[0]); 
 
   const [headCirc, setHeadCirc] = useState('58'); 
   const [headWidth, setHeadWidth] = useState('16'); 
-  const [clientContact, setClientContact] = useState('');
+
+  // Нові стейти для форми персональних даних та доставки
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [country, setCountry] = useState('');
+  const [city, setCity] = useState('');
+  const [address, setAddress] = useState('');
+  const [zipCode, setZipCode] = useState('');
 
   const generateRange = (start, end, step) => {
     const range = [];
@@ -111,9 +110,12 @@ const Calculator = () => {
 
   const sendOrder = (e) => {
     e.preventDefault();
-    if (!clientContact) return alert("Please enter your contact info!");
+    
+    // Перевірка заповнення обов'язкових полів
+    if (!fullName || !email || !country || !city || !address || !zipCode) {
+      return alert("Please fill in all the shipping and contact details!");
+    }
 
-    // Формуємо деталі кольорів залежно від візерунка
     const colorDetails = fabricPattern === 'Solid' 
       ? `Color: ${primaryColor.name}`
       : `Main Color: ${primaryColor.name}, Secondary Color: ${secondaryColor.name}`;
@@ -122,9 +124,15 @@ const Calculator = () => {
       ? `${optAv.label}${optAv.label.includes('Fabric') ? ` (Pattern: ${fabricPattern}, ${colorDetails})` : ''}`
       : 'None (Standard Chain Mail)';
 
+    // Передаємо всі дані окремими параметрами для гнучкого налаштування EmailJS
     const templateParams = {
       helmet_name: selectedHelmet.name,
-      name: clientContact,
+      client_name: fullName,
+      client_email: email,
+      shipping_country: country,
+      shipping_city: city,
+      shipping_address: address,
+      shipping_zip: zipCode,
       message: `
         Measurements: Circumference ${headCirc}cm, Width ${headWidth}cm.
         Aventail: ${aventailDetails}
@@ -135,7 +143,11 @@ const Calculator = () => {
     };
 
     emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams, 'YOUR_PUBLIC_KEY')
-      .then(() => alert('Order sent successfully!'))
+      .then(() => {
+        alert('Order sent successfully!');
+        // Очищення форми після успішної відправки
+        setFullName(''); setEmail(''); setCountry(''); setCity(''); setAddress(''); setZipCode('');
+      })
       .catch(() => alert('Error sending order.'));
   };
 
@@ -199,11 +211,8 @@ const Calculator = () => {
                     </div>
                   )}
 
-                  {/* Блок кастомізації тканини */}
                   {optAv?.label.includes('Fabric') && (
                     <div className="fabric-patterns-container">
-                      
-                      {/* ПЕРШИЙ КОЛІР */}
                       <span className="pattern-section-title">Main Color:</span>
                       <div className="color-picker-grid">
                         {fabricColors.map((color) => (
@@ -218,7 +227,6 @@ const Calculator = () => {
                         <span className="selected-color-name">{primaryColor.name}</span>
                       </div>
 
-                      {/* ДРУГИЙ КОЛІР (показується тільки якщо обрано не суцільний візерунок) */}
                       {fabricPattern !== 'Solid' && (
                         <>
                           <span className="pattern-section-title" style={{ marginTop: '4px' }}>Secondary Color:</span>
@@ -237,7 +245,6 @@ const Calculator = () => {
                         </>
                       )}
 
-                      {/* ВИБІР ВІЗЕРУНКА */}
                       <span className="pattern-section-title" style={{ marginTop: '6px' }}>Fabric Pattern:</span>
                       <div className="pattern-grid">
                         {[
@@ -251,7 +258,6 @@ const Calculator = () => {
                             className={`pattern-card ${fabricPattern === p.id ? 'active' : ''}`}
                             onClick={() => setFabricPattern(p.id)}
                           >
-                            {/* Передаємо обидва кольори в SVG фігуру */}
                             <PatternIcon 
                               type={p.id.toLowerCase()} 
                               primaryHex={primaryColor.hex} 
@@ -313,13 +319,79 @@ const Calculator = () => {
           </div>
         </div>
 
+        {/* Секція оформлення замовлення з новими полями доставки */}
         <div className="order-section">
-          <input 
-            className="calc-input" 
-            placeholder="Your Telegram or Email" 
-            value={clientContact} 
-            onChange={(e) => setClientContact(e.target.value)} 
-          />
+          <h4 className="order-section-title">Shipping & Contact Details</h4>
+          
+          <div className="shipping-form-grid">
+            <div className="input-group">
+              <label>Full Name</label>
+              <input 
+                type="text"
+                className="calc-input" 
+                placeholder="John Doe" 
+                value={fullName} 
+                onChange={(e) => setFullName(e.target.value)} 
+              />
+            </div>
+
+            <div className="input-group">
+              <label>Email Address</label>
+              <input 
+                type="email"
+                className="calc-input" 
+                placeholder="example@mail.com" 
+                value={email} 
+                onChange={(e) => setEmail(e.target.value)} 
+              />
+            </div>
+
+            <div className="input-group">
+              <label>Country</label>
+              <input 
+                type="text"
+                className="calc-input" 
+                placeholder="France" 
+                value={country} 
+                onChange={(e) => setCountry} 
+                onInput={(e) => setCountry(e.target.value)}
+              />
+            </div>
+
+            <div className="input-group">
+              <label>City</label>
+              <input 
+                type="text"
+                className="calc-input" 
+                placeholder="Paris" 
+                value={city} 
+                onChange={(e) => setCity(e.target.value)} 
+              />
+            </div>
+
+            <div className="input-group full-width">
+              <label>Full Address</label>
+              <input 
+                type="text"
+                className="calc-input" 
+                placeholder="Street, House number, Apartment" 
+                value={address} 
+                onChange={(e) => setAddress(e.target.value)} 
+              />
+            </div>
+
+            <div className="input-group">
+              <label>Zip Code / Postal Code</label>
+              <input 
+                type="text"
+                className="calc-input" 
+                placeholder="75001" 
+                value={zipCode} 
+                onChange={(e) => setZipCode(e.target.value)} 
+              />
+            </div>
+          </div>
+
           <div className="price-tag">Total: €{totalPrice}</div>
           <button className="confirm-btn" onClick={sendOrder}>Forge My Helmet</button>
         </div>

@@ -338,3 +338,82 @@ html, body {
     margin-left: 0;
   }
 }
+
+/* --- Стилі для форми персональних даних та адреси доставки --- */
+
+.order-section-title {
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  color: #fff;
+  letter-spacing: 1px;
+  margin: 0 0 10px 0;
+  text-align: left;
+  border-left: 3px solid var(--primary-red);
+  padding-left: 10px;
+}
+
+.shipping-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  width: 100%;
+  text-align: left;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Робимо поле адреси на всю ширину сітки */
+.input-group.full-width {
+  grid-column: span 2;
+}
+
+.input-group label {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.calc-input {
+  width: 100%;
+  padding: 14px;
+  background: #000;
+  border: 1px solid #444;
+  color: white;
+  font-size: 0.95rem;
+  border-radius: 2px;
+  font-family: inherit;
+  transition: border-color 0.3s ease;
+}
+
+.calc-input:focus {
+  outline: none;
+  border-color: var(--primary-red);
+}
+
+/* Адаптація форми під мобільні екрани */
+@media (max-width: 900px) {
+  .shipping-form-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .input-group.full-width {
+    grid-column: span 1;
+  }
+  
+  .order-section-title {
+    text-align: center;
+    border-left: none;
+    border-bottom: 2px solid var(--primary-red);
+    padding-left: 0;
+    padding-bottom: 5px;
+    display: inline-block;
+    margin: 0 auto 15px auto;
+  }
+}
