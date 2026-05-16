@@ -23,27 +23,19 @@ const patternPrices = {
   'Bordered': 6
 };
 
-// Оновлений компонент іконок з урахуванням центрального вирізу з ескізу
 const PatternIcon = ({ type, primaryHex, secondaryHex }) => {
   const pColor = primaryHex;
   const sColor = secondaryHex || "#111111";
 
   return (
     <svg width="44" height="44" viewBox="0 0 100 100" style={{ display: 'block' }}>
-      {/* 1. Суцільний (Solid) */}
-      {type === 'solid' && (
-        <circle cx="50" cy="50" r="44" fill={pColor} />
-      )}
-
-      {/* 2. Вертикальний спліт (Split) */}
+      {type === 'solid' && <circle cx="50" cy="50" r="44" fill={pColor} />}
       {type === 'two-colored' && (
         <>
           <circle cx="50" cy="50" r="44" fill={sColor} />
           <path d="M 50 6 A 44 44 0 0 0 50 94 Z" fill={pColor} />
         </>
       )}
-
-      {/* 3. Четверті (Quartered) */}
       {type === 'quartered' && (
         <>
           <circle cx="50" cy="50" r="44" fill={sColor} />
@@ -51,19 +43,13 @@ const PatternIcon = ({ type, primaryHex, secondaryHex }) => {
           <path d="M 50 50 L 94 50 A 44 44 0 0 1 50 94 Z" fill={pColor} />
         </>
       )}
-
-      {/* 4. З каймою (Bordered) — за ескізом кайма йде по зовнішньому колу */}
       {type === 'bordered' && (
         <>
           <circle cx="50" cy="50" r="44" fill={sColor} />
           <circle cx="50" cy="50" r="32" fill={pColor} />
         </>
       )}
-      
-      {/* ЦЕНТРАЛЬНИЙ ВИРІЗ (Ескізне внутрішнє коло для форми авентайла) */}
       <circle cx="50" cy="50" r="16" fill="#151515" stroke="#444" strokeWidth="2" />
-      
-      {/* Зовнішнє тонке кільце-обводка */}
       <circle cx="50" cy="50" r="47" fill="none" stroke="#444" strokeWidth="2" />
     </svg>
   );
@@ -78,6 +64,7 @@ const Calculator = () => {
   const [fabricPattern, setFabricPattern] = useState('Solid');
   const [primaryColor, setPrimaryColor] = useState(fabricColors[3]); 
   const [secondaryColor, setSecondaryColor] = useState(fabricColors[0]); 
+  const [embroidery, setEmbroidery] = useState('Without Embroidery'); // Новий стейт для вишивки
 
   const [headCirc, setHeadCirc] = useState('58'); 
   const [headWidth, setHeadWidth] = useState('16'); 
@@ -108,6 +95,7 @@ const Calculator = () => {
     setFabricPattern('Solid'); 
     setPrimaryColor(fabricColors[3]);
     setSecondaryColor(fabricColors[0]);
+    setEmbroidery('Without Embroidery'); // Скидання вишивки при зміні шолома
   };
 
   const patternPriceMod = optAv?.label.includes('Fabric') ? (patternPrices[fabricPattern] || 0) : 0;
@@ -129,8 +117,10 @@ const Calculator = () => {
       ? `Color: ${primaryColor.name}`
       : `Main Color: ${primaryColor.name}, Secondary Color: ${secondaryColor.name}`;
 
+    // Збираємо деталі авентайла разом із вишивкою
+    const embroideryDetails = optAv?.label.includes('Fabric') ? `, Embroidery: ${embroidery}` : '';
     const aventailDetails = optAv 
-      ? `${optAv.label}${optAv.label.includes('Fabric') ? ` (Pattern: ${fabricPattern}, ${colorDetails})` : ''}`
+      ? `${optAv.label}${optAv.label.includes('Fabric') ? ` (Pattern: ${fabricPattern}, ${colorDetails}${embroideryDetails})` : ''}`
       : 'None (Standard Chain Mail)';
 
     const templateParams = {
@@ -156,6 +146,7 @@ const Calculator = () => {
       .then(() => {
         alert('Order sent successfully!');
         setFullName(''); setEmail(''); setCountry(''); setCity(''); setAddress(''); setZipCode(''); setNotes('');
+        setEmbroidery('Without Embroidery');
       })
       .catch(() => alert('Error sending order.'));
   };
@@ -223,7 +214,6 @@ const Calculator = () => {
                   {optAv?.label.includes('Fabric') && (
                     <div className="fabric-patterns-container">
                       
-                      {/* ЗАГОЛОВОК ПЕРШОГО КОЛЬОРУ З НАЗВОЮ ПОРУЧ */}
                       <div className="color-section-header">
                         <span className="pattern-section-title">Main Color:</span>
                         <span className="selected-color-name">{primaryColor.name}</span>
@@ -240,7 +230,6 @@ const Calculator = () => {
                         ))}
                       </div>
 
-                      {/* ЗАГОЛОВОК ДРУГОГО КОЛЬОРУ З НАЗВОЮ ПОРУЧ */}
                       {fabricPattern !== 'Solid' && (
                         <>
                           <div className="color-section-header" style={{ marginTop: '8px' }}>
@@ -284,6 +273,26 @@ const Calculator = () => {
                           </div>
                         ))}
                       </div>
+
+                      {/* НОВА СЕКЦІЯ: ВИБІР ВИШИВКИ */}
+                      <span className="pattern-section-title" style={{ marginTop: '12px', display: 'block' }}>
+                        Embroidery: <span className="sub-hint-text">(Price & design discussed with master)</span>
+                      </span>
+                      <div className="mini-buttons font-sub-buttons" style={{ marginTop: '6px' }}>
+                        <button 
+                          className={embroidery === 'Without Embroidery' ? 'selected' : ''} 
+                          onClick={() => setEmbroidery('Without Embroidery')}
+                        >
+                          Without Embroidery
+                        </button>
+                        <button 
+                          className={embroidery === 'With Embroidery' ? 'selected' : ''} 
+                          onClick={() => setEmbroidery('With Embroidery')}
+                        >
+                          With Embroidery
+                        </button>
+                      </div>
+
                     </div>
                   )}
                 </div>

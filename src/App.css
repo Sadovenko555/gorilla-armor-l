@@ -507,3 +507,25 @@ textarea.calc-input.text-area-input {
     margin-bottom: 10px;
   }
 }
+
+/* Підказка про те, що ціна вишивки обговорюється */
+.sub-hint-text {
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  text-transform: none;
+  font-weight: normal;
+  letter-spacing: 0.5px;
+  margin-left: 4px;
+}
+
+/* Корекція відступів для блоку з кнопками вишивки */
+.font-sub-buttons {
+  gap: 10px;
+  width: 100%;
+}
+
+.font-sub-buttons button {
+  flex: 1;
+  min-width: 140px;
+  text-align: center;
+}
