@@ -437,11 +437,11 @@ const Calculator = () => {
             </div>
 
             <div className="input-group full-width">
-              <label>Notes / Custom Requests (Optional)</label>
+              <label>Notes</label>
               <textarea 
                 className="calc-input text-area-input" 
                 rows="3"
-                placeholder="Add any specific requirements, custom padding details or armor modifications..." 
+                placeholder="" 
                 value={notes} 
                 onChange={(e) => setNotes(e.target.value)} 
               />
