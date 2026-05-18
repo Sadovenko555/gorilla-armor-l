@@ -201,7 +201,7 @@ const Calculator = () => {
           </div>
 
           <div className="config-controls">
-            <h3>{selectedHelmet.name} — Configurator</h3>
+            <h3>{selectedHelmet.name}</h3>
             <ul className="spec-list">
               <li>
                 <strong>Dome:</strong>
