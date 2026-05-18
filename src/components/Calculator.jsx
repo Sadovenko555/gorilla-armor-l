@@ -64,7 +64,7 @@ const Calculator = () => {
   const [fabricPattern, setFabricPattern] = useState('Solid');
   const [primaryColor, setPrimaryColor] = useState(fabricColors[3]); 
   const [secondaryColor, setSecondaryColor] = useState(fabricColors[0]); 
-  const [embroidery, setEmbroidery] = useState('Without Embroidery'); // Новий стейт для вишивки
+  const [embroidery, setEmbroidery] = useState('Without Embroidery');
 
   const [headCirc, setHeadCirc] = useState('58'); 
   const [headWidth, setHeadWidth] = useState('16'); 
@@ -76,6 +76,7 @@ const Calculator = () => {
   const [address, setAddress] = useState('');
   const [zipCode, setZipCode] = useState('');
   const [notes, setNotes] = useState('');
+  const [isSending, setIsSending] = useState(false); // Стейт для предотвращения спама кликами
 
   const generateRange = (start, end, step) => {
     const range = [];
@@ -95,7 +96,7 @@ const Calculator = () => {
     setFabricPattern('Solid'); 
     setPrimaryColor(fabricColors[3]);
     setSecondaryColor(fabricColors[0]);
-    setEmbroidery('Without Embroidery'); // Скидання вишивки при зміні шолома
+    setEmbroidery('Without Embroidery');
   };
 
   const patternPriceMod = optAv?.label.includes('Fabric') ? (patternPrices[fabricPattern] || 0) : 0;
@@ -107,49 +108,71 @@ const Calculator = () => {
     (optDecor?.priceMod || 0);
 
   const sendOrder = (e) => {
-    e.preventDefault();
-    
-    if (!fullName || !email || !country || !city || !address || !zipCode) {
-      return alert("Please fill in all the shipping and contact details!");
-    }
+  e.preventDefault();
+  
+  // 1. Проверка базовых полей доставки
+  if (!fullName || !email || !country || !city || !address || !zipCode) {
+    return alert("Please fill in all the shipping and contact details!");
+  }
 
-    const colorDetails = fabricPattern === 'Solid' 
-      ? `Color: ${primaryColor.name}`
-      : `Main Color: ${primaryColor.name}, Secondary Color: ${secondaryColor.name}`;
+  setIsSending(true);
 
-    // Збираємо деталі авентайла разом із вишивкою
-    const embroideryDetails = optAv?.label.includes('Fabric') ? `, Embroidery: ${embroidery}` : '';
-    const aventailDetails = optAv 
-      ? `${optAv.label}${optAv.label.includes('Fabric') ? ` (Pattern: ${fabricPattern}, ${colorDetails}${embroideryDetails})` : ''}`
-      : 'None (Standard Chain Mail)';
+  // 2. Безопасный сбор данных о цвете ткани (добавляем проверки ?. и дефолтные строки)
+  const primaryColorName = primaryColor?.name || primaryColor?.label || 'Not selected';
+  const secondaryColorName = secondaryColor?.name || secondaryColor?.label || 'Not selected';
 
-    const templateParams = {
-      helmet_name: selectedHelmet.name,
-      client_name: fullName,
-      client_email: email,
-      shipping_country: country,
-      shipping_city: city,
-      shipping_address: address,
-      shipping_zip: zipCode,
-      client_notes: notes || 'No additional notes',
-      message: `
-        Measurements: Circumference ${headCirc}cm, Width ${headWidth}cm.
-        Aventail: ${aventailDetails}
-        Plates: ${optPlates?.label || 'Standard'}
-        Decoration: ${optDecor?.label || 'Classic'}
-        Notes: ${notes || 'None'}
-        Total Price: €${totalPrice}
-      `
-    };
+  const colorDetails = fabricPattern === 'Solid' 
+    ? `Color: ${primaryColorName}`
+    : `Main Color: ${primaryColorName}, Secondary Color: ${secondaryColorName}`;
 
-    emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams, 'YOUR_PUBLIC_KEY')
-      .then(() => {
-        alert('Order sent successfully!');
-        setFullName(''); setEmail(''); setCountry(''); setCity(''); setAddress(''); setZipCode(''); setNotes('');
-        setEmbroidery('Without Embroidery');
-      })
-      .catch(() => alert('Error sending order.'));
+  // Проверяем, выбрана ли вообще ткань в Aventail
+  const isFabric = optAv?.label && optAv.label.includes('Fabric');
+  const embroideryDetails = isFabric ? `, Embroidery: ${embroidery || 'Without Embroidery'}` : '';
+  
+  const aventailDetails = optAv?.label
+    ? `${optAv.label}${isFabric ? ` (Pattern: ${fabricPattern || 'Solid'}, ${colorDetails}${embroideryDetails})` : ''}`
+    : 'None (Standard Chain Mail)';
+
+  // 3. Формируем переменные для полей шаблона (с жесткой защитой от undefined/null)
+  const templateParams = {
+    // Внимание: проверь, что у selectedHelmet именно .name, а не .label! На всякий случай берем и то, и то:
+    helmet_name: selectedHelmet?.name || selectedHelmet?.label || 'Spoleto', 
+    price: totalPrice ? `€${totalPrice}` : '0',
+    measurements: `Circumference ${headCirc || 0}cm, Width ${headWidth || 0}cm`,
+    aventail: aventailDetails,
+    plates: optPlates?.label || optPlates?.name || 'Standard',
+    decoration: optDecor?.label || optDecor?.name || 'Classic',
+    client_name: fullName,
+    client_email: email,
+    shipping_country: country,
+    shipping_city: city,
+    shipping_address: address,
+    shipping_zip: zipCode,
+    client_notes: notes || 'No additional notes'
   };
+
+  // !!! ВАЖНО: Этот лог покажет тебе в консоли (F12), что конкретно отправляется.
+  // Если тут будет пусто или вылетит ошибка — значит, проблема в реактовских стейтах (state).
+  console.log("=== SENDING ORDER TO EMAILJS ===");
+  console.log(templateParams);
+
+  // 4. Отправка в EmailJS
+  emailjs.send('service_tmndiym', 'template_dksx62t', templateParams, 'QQpVRTj7aSUlz_3-2')
+    .then((response) => {
+      console.log('EmailJS Success Response:', response);
+      alert('Order sent successfully!');
+      // Сброс полей
+      setFullName(''); setEmail(''); setCountry(''); setCity(''); setAddress(''); setZipCode(''); setNotes('');
+      if (typeof setEmbroidery === 'function') setEmbroidery('Without Embroidery');
+    })
+    .catch((err) => {
+      console.error('EmailJS Error Details:', err);
+      alert('Error sending order. Please try again.');
+    })
+    .finally(() => {
+      setIsSending(false);
+    });
+};
 
   return (
     <div className="configurator">
@@ -274,7 +297,6 @@ const Calculator = () => {
                         ))}
                       </div>
 
-                      {/* НОВА СЕКЦІЯ: ВИБІР ВИШИВКИ */}
                       <span className="pattern-section-title" style={{ marginTop: '12px', display: 'block' }}>
                         Embroidery: <span className="sub-hint-text">(Price & design discussed with master)</span>
                       </span>
@@ -427,7 +449,13 @@ const Calculator = () => {
           </div>
 
           <div className="price-tag">Total: €{totalPrice}</div>
-          <button className="confirm-btn" onClick={sendOrder}>Forge My Helmet</button>
+          <button 
+            className="confirm-btn" 
+            onClick={sendOrder} 
+            disabled={isSending}
+          >
+            {isSending ? 'Sending...' : 'Forge My Helmet'}
+          </button>
         </div>
       </div>
     </div>
