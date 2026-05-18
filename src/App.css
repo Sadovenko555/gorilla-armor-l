@@ -340,8 +340,9 @@ html, body {
 .color-section-header {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 6px;
+  justify-content: flex-start; /* На десктопе выравниваем по левому краю */
+  gap: 6px;
+  margin-bottom: 8px;
   text-align: left;
 }
 
@@ -694,7 +695,10 @@ textarea.calc-input.text-area-input {
   .mini-buttons button, .spec-static-btn { width: 100%; text-align: center; }
   
   /* Выравнивание палитры цветов на мобилке */
-  .color-section-header { justify-content: center; }
+  .color-section-header {
+    justify-content: center; /* На мобилке выравниваем по центру */
+    text-align: center;
+  }
   .color-picker-grid { justify-content: center; gap: 10px; margin-bottom: 10px; padding: 0 10px; }
   .selected-color-name { width: 100%; text-align: center; margin-top: 4px; margin-left: 0; }
   
