@@ -196,7 +196,7 @@ const Calculator = () => {
               src={selectedHelmet.image} 
               alt={selectedHelmet.name} 
               key={selectedHelmet.id} 
-              onError={(e) => { e.target.src = 'https://via.placeholder.com/400x400?text=Image+Coming+Soon'; }}
+              onError={(e) => { e.target.src = 'https://placehold.co/400x400/151515/555555?text=Image+Coming+Soon'; }}
             />
           </div>
 
