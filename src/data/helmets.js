@@ -13,7 +13,7 @@ export const helmetsData = [
   },
   {
     id: 'pigface',
-    name: 'Pigface',
+    name: 'Klappviser (Pigface)',
     image: '/images/pigface.png',
     basePrice: 720,
     specs: { dome: '2.5 mm hardened steel', visor: '2 mm hardened steel' },
