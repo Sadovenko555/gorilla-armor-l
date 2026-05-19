@@ -575,7 +575,7 @@ textarea.calc-input.text-area-input {
 .confirm-btn { 
   background: var(--primary-red); 
   color: #fff; 
-  padding: 22px; 
+  padding: 20px 45px; /* Сделали чуть аккуратнее внутренние отступы */
   border: none; 
   font-weight: bold; 
   font-size: 1.1rem; 
@@ -583,11 +583,18 @@ textarea.calc-input.text-area-input {
   text-transform: uppercase; 
   transition: 0.3s; 
   border-radius: 2px; 
+  
+  /* ФИКС ШИРИНЫ */
+  width: 100%;             /* По умолчанию на мобилках во всю ширину */
+  max-width: 380px;        /* Ограничиваем максимальную ширину на ПК */
+  margin: 10px auto 0 auto; /* Авто-отступы по бокам центрируют кнопку */
+  display: block;          /* Необходимо для работы авто-центрирования */
 }
 
 .confirm-btn:hover { 
   background: #a00000; 
   letter-spacing: 1px; 
+  transform: translateY(-2px); /* Легкий интерактивный подъем при наведении */
 }
 
 /* ==========================================================================
@@ -683,6 +690,11 @@ textarea.calc-input.text-area-input {
   .nav-links.active { max-height: 500px; }
   .nav-links a { padding: 20px 0; text-align: center; border-bottom: 1px solid #222; display: block; width: 100%; }
   .nav-links a:last-child { border-bottom: none; }
+
+  .confirm-btn {
+    max-width: 100%; 
+    margin: 10px 0 0 0;
+  }
   
   /* Карточки спецификаций и списки */
   .spec-card { padding: 30px 15px; }
