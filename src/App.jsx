@@ -71,13 +71,22 @@ function App() {
 
       {/* Footer */}
       <footer id="contacts" className="footer">
-        <div className="footer-content">
-          <p>GORILLA ARMOR | UKRAINE</p>
-          <div className="social-links">
-            <a href="https://www.instagram.com/gorilla_armor_shop/">Instagram</a>
-          </div>
-        </div>
-      </footer>
+  <div className="footer-content">
+    <p>GORILLA ARMOR | UKRAINE</p>
+    
+    <div className="footer-email-box">
+      <a href="mailto:gorillaarmorshop@gmail.com" className="footer-email">
+        gorillaarmorshop@gmail.com
+      </a>
+    </div>
+
+    <div className="social-links">
+      <a href="https://www.instagram.com/gorilla_armor_shop/" target="_blank" rel="noopener noreferrer">
+        Instagram
+      </a>
+    </div>
+  </div>
+</footer>
     </div>
   );
 }

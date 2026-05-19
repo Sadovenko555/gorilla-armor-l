@@ -737,3 +737,23 @@ textarea.calc-input.text-area-input {
     margin: 0 auto 15px auto;
   }
 }
+
+
+/* Блок для почты в футере */
+.footer-email-box {
+  margin: 15px 0 5px 0;
+}
+
+.footer-email {
+  color: var(--text-main);
+  text-decoration: none;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  transition: color 0.3s ease;
+  font-weight: 500;
+}
+
+/* Эффект наведения — вспыхивает фирменным красным кузницы */
+.footer-email:hover {
+  color: var(--primary-red);
+}
