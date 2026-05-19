@@ -161,15 +161,16 @@ html, body {
 }
 
 .helmet-selector { 
-  display: flex; 
-  flex-wrap: wrap; 
+  display: grid; 
+  grid-template-columns: repeat(6, 1fr); /* Монолитная сетка на ПК */
   gap: 10px; 
-  justify-content: center; 
-  margin-bottom: 10px; 
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto 15px auto;
 }
 
 .helmet-tab { 
-  padding: 12px 24px; 
+  padding: 12px 10px; 
   background: var(--input-bg); 
   border: 1px solid var(--border-color);
   color: #777; 
@@ -178,6 +179,7 @@ html, body {
   font-size: 0.8rem; 
   font-weight: bold; 
   transition: 0.3s;
+  text-align: center;
 }
 
 .helmet-tab.active { 
@@ -193,12 +195,13 @@ html, body {
   width: 100%; 
   max-width: 1000px; 
   align-items: start;
+  margin: 0 auto;
 }
 
 .spec-card {
   background: #151515; 
   border: 1px solid #222; 
-  padding: 50px 40px;
+  padding: 45px 40px; /* Добавили воздуха текстовым блокам */
   display: flex; 
   flex-direction: column; 
   align-items: center;
@@ -340,7 +343,7 @@ html, body {
 .color-section-header {
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* На десктопе выравниваем по левому краю */
+  justify-content: flex-start;
   gap: 6px;
   margin-bottom: 8px;
   text-align: left;
@@ -449,22 +452,25 @@ html, body {
   border-top: 1px solid #333; 
   width: 100%; 
   max-width: 1000px; 
-  margin: 30px 0; 
+  margin: 30px auto; 
 }
 
+/* Контейнер для блоков размеров */
 .measurements-container {
   width: 100%;
   max-width: 1000px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 25px;
+  display: flex;       /* Используем flex вместо grid для правильного контроля ширины */
+  gap: 30px;           /* Красивый отступ между колонками параметров */
   padding: 10px 0;
+  margin: 0 auto;
 }
 
+/* Отдельный блок: заголовок + выпадающий список */
 .m-field { 
   display: flex; 
   flex-direction: column; 
   text-align: left; 
+  width: 150px;        /* ПРАВИЛЬНО: Задаем строгую базовую ширину для всего блока на десктопе */
 }
 
 .m-field label { 
@@ -472,11 +478,13 @@ html, body {
   color: var(--text-dim); 
   text-transform: uppercase; 
   margin-bottom: 10px; 
-  letter-spacing: 1px; 
+  letter-spacing: 1px;
+  white-space: nowrap; /* Защита от случайного переноса текста */
 }
 
+/* Сам выпадающий список */
 .armor-select {
-  width: 100%; 
+  width: 100%;         /* Занимает всю ширину родительского .m-field (то есть 150px) */
   background: #000; 
   color: #ffffff; 
   border: 1px solid #444; 
@@ -493,13 +501,19 @@ html, body {
   transition: border-color 0.3s;
 }
 
+.armor-select:focus {
+  outline: none;
+  border-color: var(--primary-red);
+}
+
+/* Секция оформления заказа */
 .order-section { 
   width: 100%; 
   max-width: 1000px; 
   display: flex; 
   flex-direction: column; 
   gap: 20px; 
-  margin-top: 40px; 
+  margin: 40px auto 0 auto; 
   padding-top: 30px; 
   border-top: 1px solid #333; 
 }
@@ -575,7 +589,7 @@ textarea.calc-input.text-area-input {
 .confirm-btn { 
   background: var(--primary-red); 
   color: #fff; 
-  padding: 20px 45px; /* Сделали чуть аккуратнее внутренние отступы */
+  padding: 18px 45px; 
   border: none; 
   font-weight: bold; 
   font-size: 1.1rem; 
@@ -584,24 +598,23 @@ textarea.calc-input.text-area-input {
   transition: 0.3s; 
   border-radius: 2px; 
   
-  /* ФИКС ШИРИНЫ */
-  width: 100%;             /* По умолчанию на мобилках во всю ширину */
-  max-width: 380px;        /* Ограничиваем максимальную ширину на ПК */
-  margin: 10px auto 0 auto; /* Авто-отступы по бокам центрируют кнопку */
-  display: block;          /* Необходимо для работы авто-центрирования */
+  width: 100%;             
+  max-width: 380px;        
+  margin: 10px auto 0 auto; 
+  display: block;          
 }
 
 .confirm-btn:hover { 
   background: #a00000; 
-  letter-spacing: 1px; 
-  transform: translateY(-2px); /* Легкий интерактивный подъем при наведении */
+  letter-spacing: 1.5px; 
+  transform: translateY(-2px); 
 }
 
 /* ==========================================================================
    8. ФУТЕР
    ========================================================================== */
 .footer { 
-  padding: 80px 20px; 
+  padding: 60px 20px; 
   border-top: 1px solid var(--border-color); 
   background: var(--bg-dark); 
   width: 100%; 
@@ -611,8 +624,25 @@ textarea.calc-input.text-area-input {
   text-align: center; 
 }
 
+.footer-email-box {
+  margin: 15px 0 5px 0;
+}
+
+.footer-email {
+  color: var(--text-main);
+  text-decoration: none;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  transition: color 0.3s ease;
+  font-weight: 500;
+}
+
+.footer-email:hover {
+  color: var(--primary-red);
+}
+
 .social-links { 
-  margin-top: 25px; 
+  margin-top: 15px; 
   display: flex; 
   justify-content: center; 
   gap: 30px; 
@@ -691,6 +721,13 @@ textarea.calc-input.text-area-input {
   .nav-links a { padding: 20px 0; text-align: center; border-bottom: 1px solid #222; display: block; width: 100%; }
   .nav-links a:last-child { border-bottom: none; }
 
+  /* Сетка выбора моделей на мобилке перестраивается */
+  .helmet-selector {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding: 0 10px;
+  }
+
   .confirm-btn {
     max-width: 100%; 
     margin: 10px 0 0 0;
@@ -708,25 +745,29 @@ textarea.calc-input.text-area-input {
   
   /* Выравнивание палитры цветов на мобилке */
   .color-section-header {
-    justify-content: center; /* На мобилке выравниваем по центру */
+    justify-content: center; 
     text-align: center;
   }
   .color-picker-grid { justify-content: center; gap: 10px; margin-bottom: 10px; padding: 0 10px; }
-  .selected-color-name { width: 100%; text-align: center; margin-top: 4px; margin-left: 0; }
+  .selected-color-name { width: auto; text-align: left; margin-top: 0; }
   
   /* Выбор узоров ткани */
   .fabric-patterns-container { width: 100%; align-items: center; }
   .pattern-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; }
   .pattern-card { width: 100%; padding: 10px 5px; }
   
-  /* ФОРМА И РАЗМЕРЫ (ФИКС БАГА) */
+/* ФОРМА И РАЗМЕРЫ (МОБИЛЬНАЯ АДАПТАЦИЯ) */
   .measurements-container {
-    grid-template-columns: 1fr 1fr !important; /* Удерживаем в один ряд (две колонки) */
+    display: grid;                  /* Включаем сетку для мобилок */
+    grid-template-columns: 1fr 1fr; /* Ровно пополам */
     gap: 12px;
-    padding: 5px 0;
+    padding: 5px 10px;
   }
   
-  /* Делаем так, чтобы длинный заголовок не переносил "(CM)" */
+  .m-field {
+    width: 100%;                    /* Сбрасываем фиксированные десктопные 150px */
+  }
+  
   .measurements-container label {
     font-size: 11px !important;
     white-space: nowrap;
@@ -750,22 +791,8 @@ textarea.calc-input.text-area-input {
   }
 }
 
-
-/* Блок для почты в футере */
-.footer-email-box {
-  margin: 15px 0 5px 0;
-}
-
-.footer-email {
-  color: var(--text-main);
-  text-decoration: none;
-  font-size: 0.95rem;
-  letter-spacing: 1px;
-  transition: color 0.3s ease;
-  font-weight: 500;
-}
-
-/* Эффект наведения — вспыхивает фирменным красным кузницы */
-.footer-email:hover {
-  color: var(--primary-red);
+@media (max-width: 480px) {
+  .helmet-selector {
+    grid-template-columns: repeat(2, 1fr); /* По 2 шлема в ряд на мелких смартфонах */
+  }
 }
