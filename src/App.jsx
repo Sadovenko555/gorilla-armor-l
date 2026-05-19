@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './App.css';
 import Calculator from './components/Calculator';
-import heroImageUrl from './assets/hero-bg-2.webp'; 
+import heroImageUrl from './assets/hero-bg-3.webp'; 
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
