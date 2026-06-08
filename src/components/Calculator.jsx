@@ -154,12 +154,12 @@ const Calculator = () => {
 
     // 4. Последовательная отправка двух писем
     // Сначала шлем администратору (тебе)
-    emailjs.send('service_tmndiym', 'template_dksx62t', templateParams, 'QQpVRTj7aSUlz_3-2')
+    emailjs.send('service_g88mmxa', 'template_dksx62t', templateParams, 'QQpVRTj7aSUlz_3-2')
       .then((adminResponse) => {
         console.log('1. Admin Notification Sent:', adminResponse);
         
         // Сразу же запускаем отправку клиенту (замени 'template_customer_confirm' на ID своего нового шаблона)
-        return emailjs.send('service_tmndiym', 'template_km157w6', templateParams, 'QQpVRTj7aSUlz_3-2');
+        return emailjs.send('service_g88mmxa', 'template_km157w6', templateParams, 'QQpVRTj7aSUlz_3-2');
       })
       .then((customerResponse) => {
         console.log('2. Customer Confirmation Sent:', customerResponse);
