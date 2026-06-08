@@ -108,71 +108,83 @@ const Calculator = () => {
     (optDecor?.priceMod || 0);
 
   const sendOrder = (e) => {
-  e.preventDefault();
-  
-  // 1. Проверка базовых полей доставки
-  if (!fullName || !email || !country || !city || !address || !zipCode) {
-    return alert("Please fill in all the shipping and contact details!");
-  }
+    e.preventDefault();
+    
+    // 1. Проверка базовых полей доставки
+    if (!fullName || !email || !country || !city || !address || !zipCode) {
+      return alert("Please fill in all the shipping and contact details!");
+    }
 
-  setIsSending(true);
+    setIsSending(true);
 
-  // 2. Безопасный сбор данных о цвете ткани (добавляем проверки ?. и дефолтные строки)
-  const primaryColorName = primaryColor?.name || primaryColor?.label || 'Not selected';
-  const secondaryColorName = secondaryColor?.name || secondaryColor?.label || 'Not selected';
+    // 2. Безопасный сбор данных о цвете ткани
+    const primaryColorName = primaryColor?.name || primaryColor?.label || 'Not selected';
+    const secondaryColorName = secondaryColor?.name || secondaryColor?.label || 'Not selected';
 
-  const colorDetails = fabricPattern === 'Solid' 
-    ? `Color: ${primaryColorName}`
-    : `Main Color: ${primaryColorName}, Secondary Color: ${secondaryColorName}`;
+    const colorDetails = fabricPattern === 'Solid' 
+      ? `Color: ${primaryColorName}`
+      : `Main Color: ${primaryColorName}, Secondary Color: ${secondaryColorName}`;
 
-  // Проверяем, выбрана ли вообще ткань в Aventail
-  const isFabric = optAv?.label && optAv.label.includes('Fabric');
-  const embroideryDetails = isFabric ? `, Embroidery: ${embroidery || 'Without Embroidery'}` : '';
-  
-  const aventailDetails = optAv?.label
-    ? `${optAv.label}${isFabric ? ` (Pattern: ${fabricPattern || 'Solid'}, ${colorDetails}${embroideryDetails})` : ''}`
-    : 'None (Standard Chain Mail)';
+    const isFabric = optAv?.label && optAv.label.includes('Fabric');
+    const embroideryDetails = isFabric ? `, Embroidery: ${embroidery || 'Without Embroidery'}` : '';
+    
+    const aventailDetails = optAv?.label
+      ? `${optAv.label}${isFabric ? ` (Pattern: ${fabricPattern || 'Solid'}, ${colorDetails}${embroideryDetails})` : ''}`
+      : 'None (Standard Chain Mail)';
 
-  // 3. Формируем переменные для полей шаблона (с жесткой защитой от undefined/null)
-  const templateParams = {
-    // Внимание: проверь, что у selectedHelmet именно .name, а не .label! На всякий случай берем и то, и то:
-    helmet_name: selectedHelmet?.name || selectedHelmet?.label || 'Spoleto', 
-    price: totalPrice ? `€${totalPrice}` : '0',
-    measurements: `Circumference ${headCirc || 0}cm, Width ${headWidth || 0}cm`,
-    aventail: aventailDetails,
-    plates: optPlates?.label || optPlates?.name || 'Standard',
-    decoration: optDecor?.label || optDecor?.name || 'Classic',
-    client_name: fullName,
-    client_email: email,
-    shipping_country: country,
-    shipping_city: city,
-    shipping_address: address,
-    shipping_zip: zipCode,
-    client_notes: notes || 'No additional notes'
+    // 3. Формируем общие переменные для обоих шаблонов
+    const templateParams = {
+      helmet_name: selectedHelmet?.name || selectedHelmet?.label || 'Spoleto', 
+      price: totalPrice ? `€${totalPrice}` : '0',
+      measurements: `Circumference ${headCirc || 0}cm, Width ${headWidth || 0}cm`,
+      aventail: aventailDetails,
+      plates: optPlates?.label || optPlates?.name || 'Standard',
+      decoration: optDecor?.label || optDecor?.name || 'Classic',
+      client_name: fullName,
+      client_email: email,
+      shipping_country: country,
+      shipping_city: city,
+      shipping_address: address,
+      shipping_zip: zipCode,
+      client_notes: notes || 'No additional notes'
+    };
+
+    console.log("=== INITIATING EMAILJS ORDER PROCESS ===");
+    console.log(templateParams);
+
+    // 4. Последовательная отправка двух писем
+    // Сначала шлем администратору (тебе)
+    emailjs.send('service_tmndiym', 'template_dksx62t', templateParams, 'QQpVRTj7aSUlz_3-2')
+      .then((adminResponse) => {
+        console.log('1. Admin Notification Sent:', adminResponse);
+        
+        // Сразу же запускаем отправку клиенту (замени 'template_customer_confirm' на ID своего нового шаблона)
+        return emailjs.send('service_tmndiym', 'template_km157w6', templateParams, 'QQpVRTj7aSUlz_3-2');
+      })
+      .then((customerResponse) => {
+        console.log('2. Customer Confirmation Sent:', customerResponse);
+        
+        // Успешный исход для обоих писем
+        alert('Order sent successfully! A confirmation email has been sent to the client.');
+        
+        // Сброс полей формы
+        setFullName(''); 
+        setEmail(''); 
+        setCountry(''); 
+        setCity(''); 
+        setAddress(''); 
+        setZipCode(''); 
+        setNotes('');
+        if (typeof setEmbroidery === 'function') setEmbroidery('Without Embroidery');
+      })
+      .catch((err) => {
+        console.error('EmailJS Error Details:', err);
+        alert('Error sending order. Please try again.');
+      })
+      .finally(() => {
+        setIsSending(false);
+      });
   };
-
-  // !!! ВАЖНО: Этот лог покажет тебе в консоли (F12), что конкретно отправляется.
-  // Если тут будет пусто или вылетит ошибка — значит, проблема в реактовских стейтах (state).
-  console.log("=== SENDING ORDER TO EMAILJS ===");
-  console.log(templateParams);
-
-  // 4. Отправка в EmailJS
-  emailjs.send('service_tmndiym', 'template_dksx62t', templateParams, 'QQpVRTj7aSUlz_3-2')
-    .then((response) => {
-      console.log('EmailJS Success Response:', response);
-      alert('Order sent successfully!');
-      // Сброс полей
-      setFullName(''); setEmail(''); setCountry(''); setCity(''); setAddress(''); setZipCode(''); setNotes('');
-      if (typeof setEmbroidery === 'function') setEmbroidery('Without Embroidery');
-    })
-    .catch((err) => {
-      console.error('EmailJS Error Details:', err);
-      alert('Error sending order. Please try again.');
-    })
-    .finally(() => {
-      setIsSending(false);
-    });
-};
 
   return (
     <div className="configurator">
