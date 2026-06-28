@@ -371,7 +371,7 @@ const Calculator = () => {
           <div className="m-field">
             <label>Head Width (cm)</label>
             <select className="armor-select" value={headWidth} onChange={(e) => setHeadWidth(e.target.value)}>
-              {generateRange(14, 18, 0.5).map(val => (
+              {generateRange(14, 20, 0.5).map(val => (
                 <option key={val} value={val}>{val}</option>
               ))}
             </select>
