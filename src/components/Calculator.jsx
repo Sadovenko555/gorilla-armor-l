@@ -363,7 +363,7 @@ const Calculator = () => {
           <div className="m-field">
             <label>Head Circumference (cm)</label>
             <select className="armor-select" value={headCirc} onChange={(e) => setHeadCirc(e.target.value)}>
-              {generateRange(54, 64, 0.5).map(val => (
+              {generateRange(54, 70, 0.5).map(val => (
                 <option key={val} value={val}>{val}</option>
               ))}
             </select>
