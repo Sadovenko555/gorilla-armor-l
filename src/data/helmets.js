@@ -32,7 +32,7 @@ export const helmetsData = [
     name: 'Romance Of Alexander',
     image: '/images/romance-alexander.png',
     basePrice: 720,
-    specs: { dome: '2.5 mm hardened steel', visor: '2 mm hardened steel + 1mm Cross', weight: '7 kg ± 0.3 kg' },
+    specs: { dome: '2.5 mm hardened steel', visor: '2 mm hardened steel + 1 mm Cross', weight: '7 kg ± 0.3 kg' },
     options: {
       chinPlate: [
   { label: 'Without Chin Plate', priceMod: 0 }, 
@@ -72,7 +72,7 @@ export const helmetsData = [
     name: 'Nasal',
     image: '/images/nasal.png',
     basePrice: 800,
-    specs: { dome: '2.5 mm hardened steel', face: 'Rods 6/8 mm + 2mm nose guard', aventail: 'Chain mail (Standard)', weight: '7 kg ± 0.3 kg' },
+    specs: { dome: '2.5 mm hardened steel', face: 'Rods 6/8 mm + 2 mm nose guard', aventail: 'Chain mail (Standard)', weight: '7 kg ± 0.3 kg' },
     options: {
       aventail: [],
       plates: [{ label: 'No plates', priceMod: 0 }, { label: 'Steel 1.2 mm', priceMod: 45 }, { label: 'Titanium 0.8 mm', priceMod: 58 }],
