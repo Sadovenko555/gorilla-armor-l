@@ -57,6 +57,7 @@ const PatternIcon = ({ type, primaryHex, secondaryHex }) => {
 
 const Calculator = () => {
   const [selectedHelmet, setSelectedHelmet] = useState(helmetsData[0]);
+  const [optChin, setOptChin] = useState(helmetsData[0].options.chinPlate?.[0] || null);
   const [optAv, setOptAv] = useState(helmetsData[0].options.aventail?.[0] || null);
   const [optPlates, setOptPlates] = useState(helmetsData[0].options.plates?.[0] || null);
   const [optDecor, setOptDecor] = useState(helmetsData[0].options.decoration?.[0] || null);
@@ -76,7 +77,7 @@ const Calculator = () => {
   const [address, setAddress] = useState('');
   const [zipCode, setZipCode] = useState('');
   const [notes, setNotes] = useState('');
-  const [isSending, setIsSending] = useState(false); // Стейт для предотвращения спама кликами
+  const [isSending, setIsSending] = useState(false);
 
   const generateRange = (start, end, step) => {
     const range = [];
@@ -89,6 +90,7 @@ const Calculator = () => {
 
   const handleHelmetChange = (h) => {
     setSelectedHelmet(h);
+    setOptChin(h.options.chinPlate?.[0] || null);
     const defaultAv = h.options.aventail?.[0] || null;
     setOptAv(defaultAv);
     setOptPlates(h.options.plates?.[0] || null);
@@ -102,6 +104,7 @@ const Calculator = () => {
   const patternPriceMod = optAv?.label.includes('Fabric') ? (patternPrices[fabricPattern] || 0) : 0;
 
   const totalPrice = selectedHelmet.basePrice + 
+    (optChin?.priceMod || 0) +
     (optAv?.priceMod || 0) + 
     patternPriceMod +
     (optPlates?.priceMod || 0) + 
@@ -110,14 +113,12 @@ const Calculator = () => {
   const sendOrder = (e) => {
     e.preventDefault();
     
-    // 1. Проверка базовых полей доставки
     if (!fullName || !email || !country || !city || !address || !zipCode) {
       return alert("Please fill in all the shipping and contact details!");
     }
 
     setIsSending(true);
 
-    // 2. Безопасный сбор данных о цвете ткани
     const primaryColorName = primaryColor?.name || primaryColor?.label || 'Not selected';
     const secondaryColorName = secondaryColor?.name || secondaryColor?.label || 'Not selected';
 
@@ -132,11 +133,20 @@ const Calculator = () => {
       ? `${optAv.label}${isFabric ? ` (Pattern: ${fabricPattern || 'Solid'}, ${colorDetails}${embroideryDetails})` : ''}`
       : 'None (Standard Chain Mail)';
 
-    // 3. Формируем общие переменные для обоих шаблонов
+    // Логика определения защитной пластины для EmailJS
+    let chinPlateDetails = 'Not applicable';
+    if (selectedHelmet.specs.chinPlate) {
+      chinPlateDetails = 'Included by default';
+    } else if (optChin) {
+      chinPlateDetails = optChin.label;
+    }
+
     const templateParams = {
       helmet_name: selectedHelmet?.name || selectedHelmet?.label || 'Spoleto', 
       price: totalPrice ? `€${totalPrice}` : '0',
+      weight: selectedHelmet.specs.weight || '7 kg ± 0.3 kg',
       measurements: `Circumference ${headCirc || 0}cm, Width ${headWidth || 0}cm`,
+      chin_plate: chinPlateDetails,
       aventail: aventailDetails,
       plates: optPlates?.label || optPlates?.name || 'Standard',
       decoration: optDecor?.label || optDecor?.name || 'Classic',
@@ -152,22 +162,15 @@ const Calculator = () => {
     console.log("=== INITIATING EMAILJS ORDER PROCESS ===");
     console.log(templateParams);
 
-    // 4. Последовательная отправка двух писем
-    // Сначала шлем администратору (тебе)
     emailjs.send('service_g88mmxa', 'template_dksx62t', templateParams, 'QQpVRTj7aSUlz_3-2')
       .then((adminResponse) => {
         console.log('1. Admin Notification Sent:', adminResponse);
-        
-        // Сразу же запускаем отправку клиенту (замени 'template_customer_confirm' на ID своего нового шаблона)
         return emailjs.send('service_g88mmxa', 'template_km157w6', templateParams, 'QQpVRTj7aSUlz_3-2');
       })
       .then((customerResponse) => {
         console.log('2. Customer Confirmation Sent:', customerResponse);
-        
-        // Успешный исход для обоих писем
         alert('Order sent successfully! A confirmation email has been sent to the client.');
         
-        // Сброс полей формы
         setFullName(''); 
         setEmail(''); 
         setCountry(''); 
@@ -228,6 +231,24 @@ const Calculator = () => {
                   <div className="spec-static-btn">{selectedHelmet.specs.visor || selectedHelmet.specs.face}</div>
                 </div>
               </li>
+
+              {/* 1. Добавленная графа: Захисна пластина підборіддя (между visor и aventail) */}
+              {(selectedHelmet.options.chinPlate || selectedHelmet.specs.chinPlate) && (
+                <li>
+                  <strong>Chin Protection Plate:</strong>
+                  <div className="mini-buttons">
+                    {selectedHelmet.options.chinPlate ? (
+                      selectedHelmet.options.chinPlate.map((c, i) => (
+                        <button key={i} className={optChin?.label === c.label ? 'selected' : ''} onClick={() => setOptChin(c)}>
+                          {c.label}
+                        </button>
+                      ))
+                    ) : (
+                      <div className="spec-static-btn">{selectedHelmet.specs.chinPlate}</div>
+                    )}
+                  </div>
+                </li>
+              )}
               
               <li>
                 <strong>Aventail:</strong>
@@ -353,6 +374,14 @@ const Calculator = () => {
                   ))}
                 </div>
               </li>
+
+              {/* 2. Добавленная графа: Масса изделия (Weight) */}
+              <li>
+                <strong>Weight:</strong>
+                <div className="mini-buttons">
+                  <div className="spec-static-btn">{selectedHelmet.specs.weight}</div>
+                </div>
+              </li>
             </ul>
           </div>
         </div>
@@ -426,7 +455,7 @@ const Calculator = () => {
               />
             </div>
 
-            <div className="input-group full-width">
+            <div className="input-group " className="input-group full-width">
               <label>Full Address</label>
               <input 
                 type="text"
