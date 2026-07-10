@@ -1,10 +1,20 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import './App.css';
 import Calculator from './components/Calculator';
 import heroImageUrl from './assets/hero-bg-3.webp'; 
 
+// Массив изображений для карусели
+const galleryImages = [
+  { id: 1, src: '/images/demo-Photoroom.png', alt: 'Gorilla Armor Custom Helmet 1' },
+  { id: 2, src: '/images/image_77c7a2.png', alt: 'Gorilla Armor Custom Helmet 2' },
+  { id: 3, src: '/images/image_77cf1e.png', alt: 'Gorilla Armor Custom Helmet 3' },
+  { id: 4, src: '/images/image_cf118c.png', alt: 'Gorilla Armor Custom Helmet 4' },
+  { id: 5, src: '/images/image_a365f0.png', alt: 'Gorilla Armor Custom Helmet 5' },
+];
+
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const scrollRef = useRef(null);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -12,6 +22,18 @@ function App() {
 
   const closeMenu = () => {
     setIsMenuOpen(false);
+  };
+
+  // Функция прокрутки карусели кнопками (для десктопа)
+  const scroll = (direction) => {
+    if (scrollRef.current) {
+      const { scrollLeft, clientWidth } = scrollRef.current;
+      const scrollTo = direction === 'left' 
+        ? scrollLeft - clientWidth 
+        : scrollLeft + clientWidth;
+      
+      scrollRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
+    }
   };
 
   return (
@@ -44,10 +66,87 @@ function App() {
       </header>
 
       {/* Gallery Section */}
-      <section id="gallery" className="section">
-        <h2 className="section-title">Our Masterpieces</h2>
-        <div className="placeholder-box">
-          <p>[ Gallery: 10 Helmet Models Coming Soon ]</p>
+      {/* На мобилках px-0, на md: возвращаем отступы, чтобы картинки шли во весь экран */}
+      <section id="gallery" className="py-20 px-0 md:px-8 bg-[#0b0b0b] relative overflow-hidden">
+        <div className="max-w-6xl mx-auto">
+          
+          {/* Заголовок галереи с мобильными отступами по бокам */}
+          <div className="text-center mb-12 px-4 md:px-0">
+            <h2 className="text-3xl md:text-4xl font-extrabold uppercase tracking-widest text-white mb-2">
+              Our Masterpieces
+            </h2>
+            <div className="h-1 w-20 bg-[#8b0000] mx-auto rounded-full"></div>
+            <p className="text-gray-400 mt-4 text-sm md:text-base">
+              A showcase of custom forged armor, tailored for historical combat.
+            </p>
+          </div>
+
+          {/* Интерактивная карусель */}
+          <div className="relative group/carousel">
+            
+            {/* Стрелка Влево */}
+            <button 
+              onClick={() => scroll('left')}
+              className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 items-center justify-center rounded-full bg-black/70 border border-[#2a2a2a] text-white opacity-0 group-hover/carousel:opacity-100 transition-all duration-300 hover:border-[#ff4d4d] hover:text-[#ff4d4d]"
+              aria-label="Previous slide"
+            >
+              ←
+            </button>
+
+            {/* Стрелка Вправо */}
+            <button 
+              onClick={() => scroll('right')}
+              className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 items-center justify-center rounded-full bg-black/70 border border-[#2a2a2a] text-white opacity-0 group-hover/carousel:opacity-100 transition-all duration-300 hover:border-[#ff4d4d] hover:text-[#ff4d4d]"
+              aria-label="Next slide"
+            >
+              →
+            </button>
+
+            {/* Контейнер-лента слайдера */}
+            <div 
+              ref={scrollRef}
+              className="flex w-full overflow-x-auto scrollbar-none snap-x snap-mandatory scroll-smooth gap-0 md:gap-6 pb-4"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              <style>{`
+                div::-webkit-scrollbar { display: none; }
+              `}</style>
+
+              {galleryImages.map((img, index) => (
+                <div 
+                  key={img.id} 
+                  className="w-full min-w-full md:w-[calc(33.333%-16px)] md:min-w-[calc(33.333%-16px)] snap-start flex-shrink-0 group relative overflow-hidden md:rounded-lg border-y md:border border-[#2a2a2a] bg-[#111111] transition-all duration-300 hover:border-[#ff4d4d] hover:shadow-[0_0_20px_rgba(255,77,77,0.15)]"
+                >
+                  {/* Изображение */}
+                  <div className="aspect-square overflow-hidden bg-[#161616]">
+                    <img 
+                      src={img.src} 
+                      alt={img.alt}
+                      className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  </div>
+
+                  {/* Оверлей при наведении */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                    <span className="text-xs uppercase tracking-widest text-[#ff4d4d] font-bold mb-1 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 delay-75">
+                      Gorilla Armor Workshop
+                    </span>
+                    <h3 className="text-lg font-semibold text-white tracking-wider uppercase transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                      Work #{String(index + 1).padStart(2, '0')}
+                    </h3>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+          </div>
+
+          {/* Подсказка для тач-скринов */}
+          <div className="text-center md:hidden mt-2 text-xs text-gray-500 tracking-widest uppercase animate-pulse">
+            ← Swipe to view masterpieces →
+          </div>
+
         </div>
       </section>
 
@@ -63,30 +162,27 @@ function App() {
       {/* Calculator Section */}
       <section id="calculator" className="section">
         <h2 className="section-title">Helmet Configurator</h2>
-        
-        {/* Ось тут ми ВИКОРИСТОВУЄМО імпортований компонент */}
         <Calculator /> 
-        
       </section>
 
       {/* Footer */}
       <footer id="contacts" className="footer">
-  <div className="footer-content">
-    <p>GORILLA ARMOR | UKRAINE</p>
-    
-    <div className="footer-email-box">
-      <a href="mailto:gorillaarmorshop@gmail.com" className="footer-email">
-        gorillaarmorshop@gmail.com
-      </a>
-    </div>
+        <div className="footer-content">
+          <p>GORILLA ARMOR | UKRAINE</p>
+          
+          <div className="footer-email-box">
+            <a href="mailto:gorillaarmorshop@gmail.com" className="footer-email">
+              gorillaarmorshop@gmail.com
+            </a>
+          </div>
 
-    <div className="social-links">
-      <a href="https://www.instagram.com/gorilla_armor_shop/" target="_blank" rel="noopener noreferrer">
-        Instagram
-      </a>
-    </div>
-  </div>
-</footer>
+          <div className="social-links">
+            <a href="https://www.instagram.com/gorilla_armor_shop/" target="_blank" rel="noopener noreferrer">
+              Instagram
+            </a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

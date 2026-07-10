@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 /* ==========================================================================
    1. ПЕРЕМЕННЫЕ И ГЛОБАЛЬНЫЕ НАСТРОЙКИ
    ========================================================================== */
@@ -222,9 +224,8 @@ html, body {
   display: flex; 
   align-items: center; 
   justify-content: center;
-  border: 1px solid #222; 
   border-radius: 4px; 
-  overflow: hidden;
+  overflow: visible; /* <-- ИЗМЕНИТЬ НА VISIBLE, чтобы низ шлема не обрезался */
 }
 
 .helmet-preview img {
