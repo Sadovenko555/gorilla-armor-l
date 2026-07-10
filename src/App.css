@@ -282,6 +282,7 @@ html, body {
   transition: all 0.2s ease; 
   border-radius: 2px; 
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .mini-buttons button:hover { 
