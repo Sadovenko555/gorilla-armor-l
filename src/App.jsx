@@ -5,21 +5,21 @@ import heroImageUrl from './assets/hero-bg-3.webp';
 
 // Массив изображений для карусели
 const galleryImages = [
-  { id: 1, src: '/images/1.png', alt: 'Gorilla Armor Custom Helmet 1' },
-  { id: 2, src: '/images/2.png', alt: 'Gorilla Armor Custom Helmet 2' },
-  { id: 3, src: '/images/3.png', alt: 'Gorilla Armor Custom Helmet 3' },
-  { id: 4, src: '/images/4.png', alt: 'Gorilla Armor Custom Helmet 4' },
-  { id: 5, src: '/images/5.png', alt: 'Gorilla Armor Custom Helmet 5' },
-  { id: 6, src: '/images/6.png', alt: 'Gorilla Armor Custom Helmet 6' },
-  { id: 7, src: '/images/7.png',alt: 'Gorilla Armor Custom Helmet 7' },
-  { id: 8, src: '/images/8.png',alt: 'Gorilla Armor Custom Helmet 8' },
-  { id: 9, src: '/images/9.png',alt: 'Gorilla Armor Custom Helmet 9' },
-  { id: 10, src: '/images/10.png',alt: 'Gorilla Armor Custom Helmet 10' },
-  { id: 11, src: '/images/11.png',alt: 'Gorilla Armor Custom Helmet 11' },
-  { id: 12, src: '/images/12.png', alt: 'Gorilla Armor Custom Helmet 12' },
-  { id: 13, src: '/images/13.png',alt: 'Gorilla Armor Custom Helmet 13' },
-  { id: 14, src: '/images/14.png',alt: 'Gorilla Armor Custom Helmet 14' },
-  { id: 15, src: '/images/15.png',alt: 'Gorilla Armor Custom Helmet 15' },
+  { id: 1, src: '/images/1.webp', alt: 'Gorilla Armor Custom Helmet 1' },
+  { id: 2, src: '/images/2.webp', alt: 'Gorilla Armor Custom Helmet 2' },
+  { id: 3, src: '/images/3.webp', alt: 'Gorilla Armor Custom Helmet 3' },
+  { id: 4, src: '/images/4.webp', alt: 'Gorilla Armor Custom Helmet 4' },
+  { id: 5, src: '/images/5.webp', alt: 'Gorilla Armor Custom Helmet 5' },
+  { id: 6, src: '/images/6.webp', alt: 'Gorilla Armor Custom Helmet 6' },
+  { id: 7, src: '/images/7.webp',alt: 'Gorilla Armor Custom Helmet 7' },
+  { id: 8, src: '/images/8.webp',alt: 'Gorilla Armor Custom Helmet 8' },
+  { id: 9, src: '/images/9.webp',alt: 'Gorilla Armor Custom Helmet 9' },
+  { id: 10, src: '/images/10.webp',alt: 'Gorilla Armor Custom Helmet 10' },
+  { id: 11, src: '/images/11.webp',alt: 'Gorilla Armor Custom Helmet 11' },
+  { id: 12, src: '/images/12.webp', alt: 'Gorilla Armor Custom Helmet 12' },
+  { id: 13, src: '/images/13.webp',alt: 'Gorilla Armor Custom Helmet 13' },
+  { id: 14, src: '/images/14.webp',alt: 'Gorilla Armor Custom Helmet 14' },
+  { id: 15, src: '/images/15.webp',alt: 'Gorilla Armor Custom Helmet 15' },
   
 ];
 

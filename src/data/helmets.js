@@ -2,7 +2,7 @@ export const helmetsData = [
   {
     id: 'spoleto',
     name: 'Spoleto',
-    image: '/images/6.png',
+    image: '/images/6.webp',
     basePrice: 670,
     specs: { dome: '2.5 mm hardened steel', visor: '2 mm hardened steel', weight: '7 kg ± 0.3 kg' },
     options: {
@@ -46,7 +46,7 @@ export const helmetsData = [
   {
     id: 'wolf-ribs',
     name: 'Wolf Ribs',
-    image: '/images/10.png',
+    image: '/images/10.webp',
     basePrice: 760,
     specs: { dome: '2.5 mm hardened steel', visor: 'Ribs 10 mm and 6 mm', chinPlate: 'Included by default 2 mm', weight: '7 kg ± 0.3 kg' },
     options: {
@@ -58,7 +58,7 @@ export const helmetsData = [
   {
     id: 'english-cross',
     name: 'English Cross',
-    image: '/images/1.png',
+    image: '/images/1.webp',
     basePrice: 790,
     specs: { dome: '2.5 mm hardened steel', face: 'Steel rods 6 and 8 mm', aventail: 'Chain mail (Standard)', weight: '7 kg ± 0.3 kg' },
     options: {
