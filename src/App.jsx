@@ -123,7 +123,7 @@ function App() {
                 div::-webkit-scrollbar { display: none; }
               `}</style>
 
-              {galleryImages.map((img, index) => (
+              {galleryImages.map((img) => (
   <div 
     key={img.id} 
     className="w-full min-w-full md:w-[calc(33.333%-16px)] md:min-w-[calc(33.333%-16px)] snap-start flex-shrink-0 group relative overflow-hidden bg-transparent transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,77,77,0.12)]"
@@ -139,13 +139,10 @@ function App() {
     </div>
 
     {/* Скорректированный оверлей при наведении */}
-    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6 pb-2">
-      <span className="text-xs uppercase tracking-widest text-[#ff4d4d] font-bold mb-1 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 delay-75">
-        Gorilla Armor Workshop
+    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6 pb-6">
+  <span className="text-xs md:text-sm uppercase tracking-widest text-[#ff4d4d] font-bold text-center md:text-left">
+    Gorilla Armor Workshop
       </span>
-      <h3 className="text-lg font-semibold text-white tracking-wider uppercase transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-        Work #{String(index + 1).padStart(2, '0')}
-      </h3>
     </div>
   </div>
 ))}
