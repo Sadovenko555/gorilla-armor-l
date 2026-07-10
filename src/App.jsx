@@ -5,11 +5,22 @@ import heroImageUrl from './assets/hero-bg-3.webp';
 
 // Массив изображений для карусели
 const galleryImages = [
-  { id: 1, src: '/images/demo-Photoroom.png', alt: 'Gorilla Armor Custom Helmet 1' },
-  { id: 2, src: '/images/image_77c7a2.png', alt: 'Gorilla Armor Custom Helmet 2' },
-  { id: 3, src: '/images/image_77cf1e.png', alt: 'Gorilla Armor Custom Helmet 3' },
-  { id: 4, src: '/images/image_cf118c.png', alt: 'Gorilla Armor Custom Helmet 4' },
-  { id: 5, src: '/images/image_a365f0.png', alt: 'Gorilla Armor Custom Helmet 5' },
+  { id: 1, src: '/images/1.png', alt: 'Gorilla Armor Custom Helmet 1' },
+  { id: 2, src: '/images/2.png', alt: 'Gorilla Armor Custom Helmet 2' },
+  { id: 3, src: '/images/3.png', alt: 'Gorilla Armor Custom Helmet 3' },
+  { id: 4, src: '/images/4.png', alt: 'Gorilla Armor Custom Helmet 4' },
+  { id: 5, src: '/images/5.png', alt: 'Gorilla Armor Custom Helmet 5' },
+  { id: 6, src: '/images/6.png', alt: 'Gorilla Armor Custom Helmet 6' },
+  { id: 7, src: '/images/7.png',alt: 'Gorilla Armor Custom Helmet 7' },
+  { id: 8, src: '/images/8.png',alt: 'Gorilla Armor Custom Helmet 8' },
+  { id: 9, src: '/images/9.png',alt: 'Gorilla Armor Custom Helmet 9' },
+  { id: 10, src: '/images/10.png',alt: 'Gorilla Armor Custom Helmet 10' },
+  { id: 11, src: '/images/11.png',alt: 'Gorilla Armor Custom Helmet 11' },
+  { id: 12, src: '/images/12.png', alt: 'Gorilla Armor Custom Helmet 12' },
+  { id: 13, src: '/images/13.png',alt: 'Gorilla Armor Custom Helmet 13' },
+  { id: 14, src: '/images/14.png',alt: 'Gorilla Armor Custom Helmet 14' },
+  { id: 15, src: '/images/15.png',alt: 'Gorilla Armor Custom Helmet 15' },
+  
 ];
 
 function App() {
@@ -113,31 +124,31 @@ function App() {
               `}</style>
 
               {galleryImages.map((img, index) => (
-                <div 
-                  key={img.id} 
-                  className="w-full min-w-full md:w-[calc(33.333%-16px)] md:min-w-[calc(33.333%-16px)] snap-start flex-shrink-0 group relative overflow-hidden md:rounded-lg border-y md:border border-[#2a2a2a] bg-[#111111] transition-all duration-300 hover:border-[#ff4d4d] hover:shadow-[0_0_20px_rgba(255,77,77,0.15)]"
-                >
-                  {/* Изображение */}
-                  <div className="aspect-square overflow-hidden bg-[#161616]">
-                    <img 
-                      src={img.src} 
-                      alt={img.alt}
-                      className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-                      loading="lazy"
-                    />
-                  </div>
+  <div 
+    key={img.id} 
+    className="w-full min-w-full md:w-[calc(33.333%-16px)] md:min-w-[calc(33.333%-16px)] snap-start flex-shrink-0 group relative overflow-hidden bg-transparent transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,77,77,0.12)]"
+  >
+    {/* Контейнер картинки */}
+    <div className="w-full h-auto pt-2 pb-6 px-2 bg-transparent flex items-center justify-center">
+      <img 
+        src={img.src} 
+        alt={img.alt}
+        className="w-full h-auto max-h-[450px] object-contain transition-transform duration-500 ease-out group-hover:scale-102"
+        loading="lazy"
+      />
+    </div>
 
-                  {/* Оверлей при наведении */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                    <span className="text-xs uppercase tracking-widest text-[#ff4d4d] font-bold mb-1 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 delay-75">
-                      Gorilla Armor Workshop
-                    </span>
-                    <h3 className="text-lg font-semibold text-white tracking-wider uppercase transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                      Work #{String(index + 1).padStart(2, '0')}
-                    </h3>
-                  </div>
-                </div>
-              ))}
+    {/* Скорректированный оверлей при наведении */}
+    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6 pb-2">
+      <span className="text-xs uppercase tracking-widest text-[#ff4d4d] font-bold mb-1 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 delay-75">
+        Gorilla Armor Workshop
+      </span>
+      <h3 className="text-lg font-semibold text-white tracking-wider uppercase transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+        Work #{String(index + 1).padStart(2, '0')}
+      </h3>
+    </div>
+  </div>
+))}
             </div>
 
           </div>
