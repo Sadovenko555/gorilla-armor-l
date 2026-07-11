@@ -1,7 +1,8 @@
 import { useState, useRef } from 'react';
 import './App.css';
 import Calculator from './components/Calculator';
-import heroImageUrl from './assets/hero-bg-3.webp'; 
+import heroImageUrl from './assets/hero-bg-3.webp';
+import { Analytics } from '@vercel/analytics/react'; 
 
 // Массив изображений для карусели
 const galleryImages = [
@@ -196,6 +197,7 @@ function App() {
           </div>
         </div>
       </footer>
+      <Analytics />
     </div>
   );
 }
