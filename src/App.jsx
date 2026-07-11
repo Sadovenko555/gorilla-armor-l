@@ -23,7 +23,7 @@ const galleryImages = [
   { id: 16, src: '/images/16.webp',alt: 'Gorilla Armor Custom Helmet 16' },
   { id: 17, src: '/images/17.webp',alt: 'Gorilla Armor Custom Helmet 17' },
   { id: 19, src: '/images/19.webp',alt: 'Gorilla Armor Custom Helmet 19' },
-  { id: 21, src: '/images/20.webp',alt: 'Gorilla Armor Custom Helmet 21' },
+  { id: 21, src: '/images/21.webp',alt: 'Gorilla Armor Custom Helmet 21' },
   { id: 20, src: '/images/20.webp',alt: 'Gorilla Armor Custom Helmet 20' },
   
 ];
