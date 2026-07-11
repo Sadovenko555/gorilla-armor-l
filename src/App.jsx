@@ -2,7 +2,8 @@ import { useState, useRef } from 'react';
 import './App.css';
 import Calculator from './components/Calculator';
 import heroImageUrl from './assets/hero-bg-3.webp';
-import { Analytics } from '@vercel/analytics/react'; 
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react'; 
 
 // Массив изображений для карусели
 const galleryImages = [
@@ -198,6 +199,7 @@ function App() {
         </div>
       </footer>
       <Analytics />
+      <SpeedInsights />
     </div>
   );
 }
