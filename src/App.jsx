@@ -54,7 +54,7 @@ function App() {
     <div className="app-container">
       {/* Navigation */}
       <nav className="navbar">
-        <div className="logo">GORILLA ARMOR</div>
+        <a href="#" className="logo" aria-label="Scroll to top">GORILLA ARMOR</a>
         
         <button className="hamburger" onClick={toggleMenu} aria-label="Menu">
           <span className={isMenuOpen ? "bar open" : "bar"}></span>
