@@ -20,9 +20,9 @@ const galleryImages = [
   { id: 13, src: '/images/13.webp',alt: 'Gorilla Armor Custom Helmet 13' },
   { id: 14, src: '/images/14.webp',alt: 'Gorilla Armor Custom Helmet 14' },
   { id: 15, src: '/images/15.webp',alt: 'Gorilla Armor Custom Helmet 15' },
-  { id: 16, src: '/images/13.webp',alt: 'Gorilla Armor Custom Helmet 16' },
-  { id: 17, src: '/images/14.webp',alt: 'Gorilla Armor Custom Helmet 17' },
-  { id: 18, src: '/images/15.webp',alt: 'Gorilla Armor Custom Helmet 18' },
+  { id: 16, src: '/images/16.webp',alt: 'Gorilla Armor Custom Helmet 16' },
+  { id: 17, src: '/images/17.webp',alt: 'Gorilla Armor Custom Helmet 17' },
+  { id: 18, src: '/images/18.webp',alt: 'Gorilla Armor Custom Helmet 18' },
   
 ];
 
