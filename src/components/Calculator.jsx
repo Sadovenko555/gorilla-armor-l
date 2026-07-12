@@ -232,23 +232,31 @@ const Calculator = () => {
                 </div>
               </li>
 
-              {/* 1. Добавленная графа: Захисна пластина підборіддя (между visor и aventail) */}
-              {(selectedHelmet.options.chinPlate || selectedHelmet.specs.chinPlate) && (
-                <li>
-                  <strong>Chin Protection Plate:</strong>
-                  <div className="mini-buttons">
-                    {selectedHelmet.options.chinPlate ? (
-                      selectedHelmet.options.chinPlate.map((c, i) => (
-                        <button key={i} className={optChin?.label === c.label ? 'selected' : ''} onClick={() => setOptChin(c)}>
-                          {c.label}
-                        </button>
-                      ))
-                    ) : (
-                      <div className="spec-static-btn">{selectedHelmet.specs.chinPlate}</div>
-                    )}
-                  </div>
-                </li>
-              )}
+           {/* 1. Добавленная графа: Захисна пластина підборіддя (между visor и aventail) */}
+{(selectedHelmet.options.chinPlate || selectedHelmet.specs.chinPlate) && (
+  <li>
+    <strong>Chin Protection Plate:</strong>
+    
+    {/* ІСПРАВЛЕНО: Додали обгортку для збереження вертикальної лінії та сітки */}
+    <div className="spec-options-wrapper">
+      <div className="mini-buttons">
+        {selectedHelmet.options.chinPlate ? (
+          selectedHelmet.options.chinPlate.map((c, i) => (
+            <button 
+              key={i} 
+              className={optChin?.label === c.label ? 'selected' : ''} 
+              onClick={() => setOptChin(c)}
+            >
+              {c.label} {c.priceMod !== 0 && `(+€${c.priceMod})`}
+            </button>
+          ))
+        ) : (
+          <div className="spec-static-btn">{selectedHelmet.specs.chinPlate}</div>
+        )}
+      </div>
+    </div>
+  </li>
+)}
               
               <li>
                 <strong>Aventail:</strong>
