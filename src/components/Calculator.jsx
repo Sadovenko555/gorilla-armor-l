@@ -70,8 +70,11 @@ const Calculator = () => {
   const [headCirc, setHeadCirc] = useState('58'); 
   const [headWidth, setHeadWidth] = useState('16'); 
 
+  // Стейти контактної форми (включаючи нові соцмережі)
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
+  const [instagram, setInstagram] = useState('');
+  const [facebook, setFacebook] = useState('');
   const [country, setCountry] = useState('');
   const [city, setCity] = useState('');
   const [address, setAddress] = useState('');
@@ -113,8 +116,14 @@ const Calculator = () => {
   const sendOrder = (e) => {
     e.preventDefault();
     
+    // 1. Валідація основних полів доставки
     if (!fullName || !email || !country || !city || !address || !zipCode) {
       return alert("Please fill in all the shipping and contact details!");
+    }
+
+    // 2. Валідація соцмереж: хоча б одне поле має бути заповнене
+    if (!instagram.trim() && !facebook.trim()) {
+      return alert("Please provide at least one social media contact: Instagram Nickname OR Facebook Profile so the master can reach you!");
     }
 
     setIsSending(true);
@@ -133,7 +142,6 @@ const Calculator = () => {
       ? `${optAv.label}${isFabric ? ` (Pattern: ${fabricPattern || 'Solid'}, ${colorDetails}${embroideryDetails})` : ''}`
       : 'None (Standard Chain Mail)';
 
-    // Логика определения защитной пластины для EmailJS
     let chinPlateDetails = 'Not applicable';
     if (selectedHelmet.specs.chinPlate) {
       chinPlateDetails = 'Included by default';
@@ -141,6 +149,7 @@ const Calculator = () => {
       chinPlateDetails = optChin.label;
     }
 
+    // Передаємо параметри у шаблони EmailJS (включаючи instagram та facebook)
     const templateParams = {
       helmet_name: selectedHelmet?.name || selectedHelmet?.label || 'Spoleto', 
       price: totalPrice ? `€${totalPrice}` : '0',
@@ -152,6 +161,8 @@ const Calculator = () => {
       decoration: optDecor?.label || optDecor?.name || 'Classic',
       client_name: fullName,
       client_email: email,
+      instagram: instagram.trim() || 'Not provided',
+      facebook: facebook.trim() || 'Not provided',
       shipping_country: country,
       shipping_city: city,
       shipping_address: address,
@@ -171,8 +182,11 @@ const Calculator = () => {
         console.log('2. Customer Confirmation Sent:', customerResponse);
         alert('Order sent successfully! A confirmation email has been sent to the client.');
         
+        // Очищення форми при успіху
         setFullName(''); 
         setEmail(''); 
+        setInstagram('');
+        setFacebook('');
         setCountry(''); 
         setCity(''); 
         setAddress(''); 
@@ -232,31 +246,29 @@ const Calculator = () => {
                 </div>
               </li>
 
-           {/* 1. Добавленная графа: Захисна пластина підборіддя (между visor и aventail) */}
-{(selectedHelmet.options.chinPlate || selectedHelmet.specs.chinPlate) && (
-  <li>
-    <strong>Chin Protection Plate:</strong>
-    
-    {/* ІСПРАВЛЕНО: Додали обгортку для збереження вертикальної лінії та сітки */}
-    <div className="spec-options-wrapper">
-      <div className="mini-buttons">
-        {selectedHelmet.options.chinPlate ? (
-          selectedHelmet.options.chinPlate.map((c, i) => (
-            <button 
-              key={i} 
-              className={optChin?.label === c.label ? 'selected' : ''} 
-              onClick={() => setOptChin(c)}
-            >
-              {c.label} {c.priceMod !== 0 && `(+€${c.priceMod})`}
-            </button>
-          ))
-        ) : (
-          <div className="spec-static-btn">{selectedHelmet.specs.chinPlate}</div>
-        )}
-      </div>
-    </div>
-  </li>
-)}
+              {/* Захисна пластина підборіддя з фіксованою обгорткою верстки */}
+              {(selectedHelmet.options.chinPlate || selectedHelmet.specs.chinPlate) && (
+                <li>
+                  <strong>Chin Protection Plate:</strong>
+                  <div className="spec-options-wrapper">
+                    <div className="mini-buttons">
+                      {selectedHelmet.options.chinPlate ? (
+                        selectedHelmet.options.chinPlate.map((c, i) => (
+                          <button 
+                            key={i} 
+                            className={optChin?.label === c.label ? 'selected' : ''} 
+                            onClick={() => setOptChin(c)}
+                          >
+                            {c.label} {c.priceMod !== 0 && `(+€${c.priceMod})`}
+                          </button>
+                        ))
+                      ) : (
+                        <div className="spec-static-btn">{selectedHelmet.specs.chinPlate}</div>
+                      )}
+                    </div>
+                  </div>
+                </li>
+              )}
               
               <li>
                 <strong>Aventail:</strong>
@@ -277,7 +289,6 @@ const Calculator = () => {
 
                   {optAv?.label.includes('Fabric') && (
                     <div className="fabric-patterns-container">
-                      
                       <div className="color-section-header">
                         <span className="pattern-section-title">Main Color:</span>
                         <span className="selected-color-name">{primaryColor.name}</span>
@@ -355,7 +366,6 @@ const Calculator = () => {
                           With Embroidery
                         </button>
                       </div>
-
                     </div>
                   )}
                 </div>
@@ -383,7 +393,6 @@ const Calculator = () => {
                 </div>
               </li>
 
-              {/* 2. Добавленная графа: Масса изделия (Weight) */}
               <li>
                 <strong>Weight:</strong>
                 <div className="mini-buttons">
@@ -415,6 +424,7 @@ const Calculator = () => {
           </div>
         </div>
 
+        {/* Форма замовлення */}
         <div className="order-section">
           <h4 className="order-section-title">Shipping & Contact Details</h4>
           
@@ -442,6 +452,28 @@ const Calculator = () => {
             </div>
 
             <div className="input-group">
+              <label>Instagram Nickname</label>
+              <input 
+                type="text"
+                className="calc-input" 
+                placeholder="@gorilla_armor" 
+                value={instagram} 
+                onChange={(e) => setInstagram(e.target.value)} 
+              />
+            </div>
+
+            <div className="input-group">
+              <label>Facebook Profile</label>
+              <input 
+                type="text"
+                className="calc-input" 
+                placeholder="facebook.com/profile" 
+                value={facebook} 
+                onChange={(e) => setFacebook(e.target.value)} 
+              />
+            </div>
+
+            <div className="input-group">
               <label>Country</label>
               <input 
                 type="text"
@@ -463,7 +495,7 @@ const Calculator = () => {
               />
             </div>
 
-            <div className="input-group " className="input-group full-width">
+            <div className="input-group full-width">
               <label>Full Address</label>
               <input 
                 type="text"
