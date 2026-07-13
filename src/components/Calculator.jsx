@@ -73,6 +73,7 @@ const Calculator = () => {
   // Стейти контактної форми (включаючи нові соцмережі)
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [instagram, setInstagram] = useState('');
   const [facebook, setFacebook] = useState('');
   const [country, setCountry] = useState('');
@@ -450,6 +451,17 @@ const Calculator = () => {
                 onChange={(e) => setEmail(e.target.value)} 
               />
             </div>
+
+            <div className="input-group">
+  <label>Phone Number</label>
+  <input 
+    type="tel"
+    className="calc-input" 
+    placeholder="+380 99 123 4567" 
+    value={phone} 
+    onChange={(e) => setPhone(e.target.value)} 
+  />
+</div>
 
             <div className="input-group">
               <label>Instagram Nickname</label>
