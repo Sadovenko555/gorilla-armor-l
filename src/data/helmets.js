@@ -8,7 +8,7 @@ export const helmetsData = [
     options: {
       chinPlate: [
   { label: 'Without Chin Plate', priceMod: 0 }, 
-  { label: 'With Chin Plate 2 mm (+5€)', priceMod: 5 }
+  { label: 'With Chin Plate 2 mm', priceMod: 5 }
 ],
       aventail: [{ label: 'Fabric (Standard)', priceMod: 0 }, { label: 'Chain Mail', priceMod: 180 }],
       plates: [{ label: 'Steel 1.2 mm (Standard)', priceMod: 0 }, { label: 'Titanium 0.8 mm', priceMod: 58 }],
