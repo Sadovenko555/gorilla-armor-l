@@ -48,7 +48,7 @@ export const helmetsData = [
     name: 'Wolf Ribs',
     image: '/images/10.webp',
     basePrice: 760,
-    specs: { dome: '2.5 mm hardened steel', visor: 'Ribs 10 mm and 6 mm', chinPlate: 'Included by default 2 mm', weight: '7 kg ± 0.3 kg' },
+    specs: { dome: '2.5 mm hardened steel', visor: 'Ribs 10 mm and 6 mm', chinPlate: 'Included by default 2 mm', protectiveBars: '4 internal steel bars (included)', weight: '7 kg ± 0.3 kg' },
     options: {
       aventail: [{ label: 'Fabric (Standard)', priceMod: 0 }, { label: 'Chain Mail', priceMod: 180 }],
       plates: [{ label: 'Steel 1.2 mm (Standard)', priceMod: 0 }, { label: 'Titanium 0.8 mm', priceMod: 58 }],

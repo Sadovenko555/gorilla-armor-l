@@ -247,6 +247,18 @@ const Calculator = () => {
                 </div>
               </li>
 
+              {/* НОВИЙ ПУНКТ: Додаткові захисні прути */}
+{selectedHelmet.specs.protectiveBars && (
+  <li>
+    <strong>Inner Guard Bars:</strong>
+    <div className="mini-buttons">
+      <div className="spec-static-btn">
+        {selectedHelmet.specs.protectiveBars}
+      </div>
+    </div>
+  </li>
+)}
+
               {/* Захисна пластина підборіддя з фіксованою обгорткою верстки */}
               {(selectedHelmet.options.chinPlate || selectedHelmet.specs.chinPlate) && (
                 <li>
