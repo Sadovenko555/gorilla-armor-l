@@ -3,7 +3,7 @@ export const helmetsData = [
     id: 'spoleto',
     name: 'Spoleto',
     image: '/images/6.webp',
-    basePrice: 670,
+    basePrice: 700,
     specs: { dome: '2.5 mm hardened steel', visor: '2 mm hardened steel', weight: '7 kg ± 0.3 kg' },
     options: {
       chinPlate: [
@@ -31,7 +31,7 @@ export const helmetsData = [
     id: 'romance-alexander',
     name: 'Romance Of Alexander',
     image: '/images/romance-alexander.png',
-    basePrice: 720,
+    basePrice: 740,
     specs: { dome: '2.5 mm hardened steel', visor: '2 mm hardened steel + 1 mm Cross', weight: '7 kg ± 0.3 kg' },
     options: {
       chinPlate: [
@@ -47,7 +47,7 @@ export const helmetsData = [
     id: 'wolf-ribs',
     name: 'Wolf Ribs',
     image: '/images/10.webp',
-    basePrice: 760,
+    basePrice: 790,
     specs: { dome: '2.5 mm hardened steel', visor: 'Ribs 10 mm and 6 mm', chinPlate: 'Included by default 2 mm', protectiveBars: '4 internal steel bars 6 mm (included)', weight: '7 kg ± 0.3 kg' },
     options: {
       aventail: [{ label: 'Fabric (Standard)', priceMod: 0 }, { label: 'Chain Mail', priceMod: 180 }],
@@ -63,7 +63,7 @@ export const helmetsData = [
     specs: { dome: '2.5 mm hardened steel', face: 'Steel rods 6 and 8 mm', aventail: 'Chain mail (Standard)', weight: '7 kg ± 0.3 kg' },
     options: {
       aventail: [],
-      plates: [{ label: 'No plates', priceMod: 0 }, { label: 'Steel 1.2 mm', priceMod: 45 }, { label: 'Titanium 0.8 mm', priceMod: 58 }],
+      plates: [{ label: 'No plates', priceMod: 0 }, { label: 'Steel 1.2 mm', priceMod: 47 }, { label: 'Titanium 0.8 mm', priceMod: 58 }],
       decoration: [{ label: 'Classic Cross', priceMod: 0 }, { label: 'Blackening', priceMod: 15 }, { label: 'Gilding', priceMod: 25 }]
     }
   },
@@ -75,7 +75,7 @@ export const helmetsData = [
     specs: { dome: '2.5 mm hardened steel', face: 'Rods 6/8 mm + 2 mm nose guard', aventail: 'Chain mail (Standard)', weight: '7 kg ± 0.3 kg' },
     options: {
       aventail: [],
-      plates: [{ label: 'No plates', priceMod: 0 }, { label: 'Steel 1.2 mm', priceMod: 45 }, { label: 'Titanium 0.8 mm', priceMod: 58 }],
+      plates: [{ label: 'No plates', priceMod: 0 }, { label: 'Steel 1.2 mm', priceMod: 47 }, { label: 'Titanium 0.8 mm', priceMod: 58 }],
       decoration: [{ label: 'Classic Nose', priceMod: 0 }, { label: 'Blackening', priceMod: 10 }, { label: 'Gilding', priceMod: 20 }]
     }
   }
