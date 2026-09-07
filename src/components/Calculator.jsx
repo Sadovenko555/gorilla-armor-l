@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { helmetsData } from '../data/helmets';
 import emailjs from '@emailjs/browser';
+import HeadMeasurements from './HeadMeasurements';
 
 const fabricColors = [
   { name: 'Black', hex: '#1a1a1a' },
@@ -70,7 +71,10 @@ const Calculator = () => {
   const [headCirc, setHeadCirc] = useState('58'); 
   const [headWidth, setHeadWidth] = useState('16'); 
 
-  // Стейти контактної форми (включаючи нові соцмережі)
+  // Модалка замеров головы
+  const [isGuideOpen, setIsGuideOpen] = useState(false);
+
+  // Стейти контактної форми
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -117,12 +121,10 @@ const Calculator = () => {
   const sendOrder = (e) => {
     e.preventDefault();
     
-    // 1. Валідація основних полів доставки
     if (!fullName || !email || !country || !city || !address || !zipCode) {
       return alert("Please fill in all the shipping and contact details!");
     }
 
-    // 2. Валідація соцмереж: хоча б одне поле має бути заповнене
     if (!instagram.trim() && !facebook.trim()) {
       return alert("Please provide at least one social media contact: Instagram Nickname OR Facebook Profile so the master can reach you!");
     }
@@ -150,7 +152,6 @@ const Calculator = () => {
       chinPlateDetails = optChin.label;
     }
 
-    // Передаємо параметри у шаблони EmailJS (включаючи instagram та facebook)
     const templateParams = {
       helmet_name: selectedHelmet?.name || selectedHelmet?.label || 'Spoleto', 
       price: totalPrice ? `€${totalPrice}` : '0',
@@ -171,19 +172,13 @@ const Calculator = () => {
       client_notes: notes || 'No additional notes'
     };
 
-    console.log("=== INITIATING EMAILJS ORDER PROCESS ===");
-    console.log(templateParams);
-
     emailjs.send('service_g88mmxa', 'template_dksx62t', templateParams, 'QQpVRTj7aSUlz_3-2')
-      .then((adminResponse) => {
-        console.log('1. Admin Notification Sent:', adminResponse);
-        return emailjs.send('service_g88mmxa', 'template_km157w6', templateParams, 'QQpVRTj7aSUlz_3-2');
-      })
-      .then((customerResponse) => {
-        console.log('2. Customer Confirmation Sent:', customerResponse);
-        alert('Order sent successfully! A confirmation email has been sent to the client.');
+  .then(() => {
+    return emailjs.send('service_g88mmxa', 'template_km157w6', templateParams, 'QQpVRTj7aSUlz_3-2');
+  })
+  .then(() => {
+    alert('Order sent successfully! A confirmation email has been sent to the client.');
         
-        // Очищення форми при успіху
         setFullName(''); 
         setEmail(''); 
         setInstagram('');
@@ -247,19 +242,17 @@ const Calculator = () => {
                 </div>
               </li>
 
-              {/* НОВИЙ ПУНКТ: Додаткові захисні прути */}
-{selectedHelmet.specs.protectiveBars && (
-  <li>
-    <strong>Inner Guard Bars:</strong>
-    <div className="mini-buttons">
-      <div className="spec-static-btn">
-        {selectedHelmet.specs.protectiveBars}
-      </div>
-    </div>
-  </li>
-)}
+              {selectedHelmet.specs.protectiveBars && (
+                <li>
+                  <strong>Inner Guard Bars:</strong>
+                  <div className="mini-buttons">
+                    <div className="spec-static-btn">
+                      {selectedHelmet.specs.protectiveBars}
+                    </div>
+                  </div>
+                </li>
+              )}
 
-              {/* Захисна пластина підборіддя з фіксованою обгорткою верстки */}
               {(selectedHelmet.options.chinPlate || selectedHelmet.specs.chinPlate) && (
                 <li>
                   <strong>Chin Protection Plate:</strong>
@@ -418,22 +411,41 @@ const Calculator = () => {
 
         <hr className="divider" />
 
-        <div className="measurements-container">
-          <div className="m-field">
-            <label>Head Circumference (cm)</label>
-            <select className="armor-select" value={headCirc} onChange={(e) => setHeadCirc(e.target.value)}>
-              {generateRange(54, 64, 0.5).map(val => (
-                <option key={val} value={val}>{val}</option>
-              ))}
-            </select>
+        {/* Блок замерів з кнопкой-підказкою */}
+        <div className="measurements-section mb-6">
+          <div className="flex items-center justify-between mb-3 px-1">
+            <span className="text-sm font-bold uppercase tracking-wider text-white">
+              Head Measurements
+            </span>
+            <button
+              type="button"
+              onClick={() => setIsGuideOpen(true)}
+              className="inline-flex items-center gap-1.5 text-xs text-[#ff4d4d] hover:text-red-400 font-semibold transition-colors underline underline-offset-4 cursor-pointer"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              How to measure your head?
+            </button>
           </div>
-          <div className="m-field">
-            <label>Head Width (cm)</label>
-            <select className="armor-select" value={headWidth} onChange={(e) => setHeadWidth(e.target.value)}>
-              {generateRange(14, 20, 0.5).map(val => (
-                <option key={val} value={val}>{val}</option>
-              ))}
-            </select>
+
+          <div className="measurements-container">
+            <div className="m-field">
+              <label>Head Circumference (cm)</label>
+              <select className="armor-select" value={headCirc} onChange={(e) => setHeadCirc(e.target.value)}>
+                {generateRange(54, 64, 0.5).map(val => (
+                  <option key={val} value={val}>{val}</option>
+                ))}
+              </select>
+            </div>
+            <div className="m-field">
+              <label>Head Width (cm)</label>
+              <select className="armor-select" value={headWidth} onChange={(e) => setHeadWidth(e.target.value)}>
+                {generateRange(14, 20, 0.5).map(val => (
+                  <option key={val} value={val}>{val}</option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
 
@@ -465,15 +477,15 @@ const Calculator = () => {
             </div>
 
             <div className="input-group">
-  <label>Phone Number</label>
-  <input 
-    type="tel"
-    className="calc-input" 
-    placeholder="+380 99 123 4567" 
-    value={phone} 
-    onChange={(e) => setPhone(e.target.value)} 
-  />
-</div>
+              <label>Phone Number</label>
+              <input 
+                type="tel"
+                className="calc-input" 
+                placeholder="+380 99 123 4567" 
+                value={phone} 
+                onChange={(e) => setPhone(e.target.value)} 
+              />
+            </div>
 
             <div className="input-group">
               <label>Instagram Nickname</label>
@@ -563,6 +575,12 @@ const Calculator = () => {
           </button>
         </div>
       </div>
+
+      {/* Модальное окно инструкций */}
+      <HeadMeasurements 
+        isOpen={isGuideOpen} 
+        onClose={() => setIsGuideOpen(false)} 
+      />
     </div>
   );
 };
