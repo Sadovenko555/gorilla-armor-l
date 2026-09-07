@@ -65,10 +65,10 @@ const HeadMeasurements = ({ isOpen, onClose }) => {
   </div>
   <div>
     <h4 className="font-bold uppercase tracking-wider text-white text-xs mb-1">
-      Head Circumference
+      Head Width
     </h4>
     <p className="text-zinc-400 text-xs leading-relaxed">
-      Measure the full circumference of the head, passing around the widest part of the skull, just above the eyebrows and around the back of the head.
+      Measure the maximum width of the head, from temple to temple. If possible, take this measurement using calipers.
     </p>
   </div>
 </div>
@@ -79,10 +79,11 @@ const HeadMeasurements = ({ isOpen, onClose }) => {
             </div>
             <div>
               <h4 className="font-bold uppercase tracking-wider text-white text-xs mb-1">
-                Head Width
+                
+Head Circumference
               </h4>
               <p className="text-zinc-400 text-xs leading-relaxed">
-                Measure the maximum width of the head, from temple to temple. If possible, take this measurement using calipers.
+                Measure the full circumference of the head, passing around the widest part of the skull, just above the eyebrows and around the back of the head.
               </p>
             </div>
           </div>
