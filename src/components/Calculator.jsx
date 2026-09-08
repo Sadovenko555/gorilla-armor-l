@@ -74,7 +74,7 @@ const Calculator = () => {
   // Модалка замеров головы
   const [isGuideOpen, setIsGuideOpen] = useState(false);
 
-  // Стейти контактної форми
+  // Стейти контактної формы
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -109,7 +109,10 @@ const Calculator = () => {
     setEmbroidery('Without Embroidery');
   };
 
-  const patternPriceMod = optAv?.label.includes('Fabric') ? (patternPrices[fabricPattern] || 0) : 0;
+  // Проверка наличия ткани в выбранной опции авентайла
+  const isFabric = optAv?.label && optAv.label.includes('Fabric');
+
+  const patternPriceMod = isFabric ? (patternPrices[fabricPattern] || 0) : 0;
 
   const totalPrice = selectedHelmet.basePrice + 
     (optChin?.priceMod || 0) +
@@ -138,7 +141,6 @@ const Calculator = () => {
       ? `Color: ${primaryColorName}`
       : `Main Color: ${primaryColorName}, Secondary Color: ${secondaryColorName}`;
 
-    const isFabric = optAv?.label && optAv.label.includes('Fabric');
     const embroideryDetails = isFabric ? `, Embroidery: ${embroidery || 'Without Embroidery'}` : '';
     
     const aventailDetails = optAv?.label
@@ -163,6 +165,7 @@ const Calculator = () => {
       decoration: optDecor?.label || optDecor?.name || 'Classic',
       client_name: fullName,
       client_email: email,
+      phone_number: phone.trim() || 'Not provided',
       instagram: instagram.trim() || 'Not provided',
       facebook: facebook.trim() || 'Not provided',
       shipping_country: country,
@@ -173,14 +176,15 @@ const Calculator = () => {
     };
 
     emailjs.send('service_g88mmxa', 'template_dksx62t', templateParams, 'QQpVRTj7aSUlz_3-2')
-  .then(() => {
-    return emailjs.send('service_g88mmxa', 'template_km157w6', templateParams, 'QQpVRTj7aSUlz_3-2');
-  })
-  .then(() => {
-    alert('Order sent successfully! A confirmation email has been sent to the client.');
+      .then(() => {
+        return emailjs.send('service_g88mmxa', 'template_km157w6', templateParams, 'QQpVRTj7aSUlz_3-2');
+      })
+      .then(() => {
+        alert('Order sent successfully! A confirmation email has been sent to the client.');
         
         setFullName(''); 
         setEmail(''); 
+        setPhone('');
         setInstagram('');
         setFacebook('');
         setCountry(''); 
@@ -188,7 +192,7 @@ const Calculator = () => {
         setAddress(''); 
         setZipCode(''); 
         setNotes('');
-        if (typeof setEmbroidery === 'function') setEmbroidery('Without Embroidery');
+        setEmbroidery('Without Embroidery');
       })
       .catch((err) => {
         console.error('EmailJS Error Details:', err);
@@ -293,7 +297,7 @@ const Calculator = () => {
                     </div>
                   )}
 
-                  {optAv?.label.includes('Fabric') && (
+                  {isFabric && (
                     <div className="fabric-patterns-container">
                       <div className="color-section-header">
                         <span className="pattern-section-title">Main Color:</span>

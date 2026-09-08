@@ -10,7 +10,11 @@ export const helmetsData = [
   { label: 'Without Chin Plate', priceMod: 0 }, 
   { label: 'With Chin Plate 2 mm', priceMod: 5 }
 ],
-      aventail: [{ label: 'Fabric (Standard)', priceMod: 0 }, { label: 'Chain Mail', priceMod: 180 }],
+      aventail: [
+  { label: 'Fabric (Standard)', priceMod: 0 },
+  { label: 'Chain Mail', priceMod: 180 },
+  { label: 'Fabric + Chain Mail', priceMod: 225 }
+],
       plates: [{ label: 'Steel 1.2 mm (Standard)', priceMod: 0 }, { label: 'Titanium 0.8 mm', priceMod: 58 }],
       decoration: [{ label: 'Classic Grinding', priceMod: 0 }, { label: 'Blackening', priceMod: 20 }, { label: 'Gilding', priceMod: 30 }]
     }
@@ -22,7 +26,11 @@ export const helmetsData = [
     basePrice: 720,
     specs: { dome: '2.5 mm hardened steel', visor: '2 mm hardened steel', chinPlate: 'Included by default 2 mm', weight: '7 kg ± 0.3 kg' },
     options: {
-      aventail: [{ label: 'Fabric (Standard)', priceMod: 0 }, { label: 'Chain Mail', priceMod: 180 }],
+      aventail: [
+  { label: 'Fabric (Standard)', priceMod: 0 },
+  { label: 'Chain Mail', priceMod: 180 },
+  { label: 'Fabric + Chain Mail', priceMod: 225 }
+],
       plates: [{ label: 'Steel 1.2 mm (Standard)', priceMod: 0 }, { label: 'Titanium 0.8 mm', priceMod: 58 }],
       decoration: [{ label: 'Classic Grinding', priceMod: 0 }, { label: 'Blackening', priceMod: 20 }, { label: 'Gilding', priceMod: 30 }]
     }
@@ -38,7 +46,11 @@ export const helmetsData = [
   { label: 'Without Chin Plate', priceMod: 0 }, 
   { label: 'With Chin Plate 2 mm (+5€)', priceMod: 5 }
 ],
-      aventail: [{ label: 'Fabric (Standard)', priceMod: 0 }, { label: 'Chain Mail', priceMod: 180 }],
+      aventail: [
+  { label: 'Fabric (Standard)', priceMod: 0 },
+  { label: 'Chain Mail', priceMod: 180 },
+  { label: 'Fabric + Chain Mail', priceMod: 225 }
+],
       plates: [{ label: 'Steel 1.2 mm (Standard)', priceMod: 0 }, { label: 'Titanium 0.8 mm', priceMod: 58 }],
       decoration: [{ label: 'Classic Cross', priceMod: 0 }, { label: 'Blackening', priceMod: 15 }, { label: 'Gilding', priceMod: 25 }]
     }
@@ -50,7 +62,11 @@ export const helmetsData = [
     basePrice: 790,
     specs: { dome: '2.5 mm hardened steel', visor: 'Ribs 10 mm and 6 mm', chinPlate: 'Included by default 2 mm', protectiveBars: '4 internal steel bars 6 mm (included)', weight: '7 kg ± 0.3 kg' },
     options: {
-      aventail: [{ label: 'Fabric (Standard)', priceMod: 0 }, { label: 'Chain Mail', priceMod: 180 }],
+      aventail: [
+  { label: 'Fabric (Standard)', priceMod: 0 },
+  { label: 'Chain Mail', priceMod: 180 },
+  { label: 'Fabric + Chain Mail', priceMod: 225 }
+],
       plates: [{ label: 'Steel 1.2 mm (Standard)', priceMod: 0 }, { label: 'Titanium 0.8 mm', priceMod: 58 }],
       decoration: [{ label: 'Classic Ribs', priceMod: 0 }, { label: 'Blackening', priceMod: 25 }, { label: 'Gilding', priceMod: 35 }]
     }
